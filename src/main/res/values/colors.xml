@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="cjx_colorPrimary">#fefefe</color>
+
+    <color name="cjx_title_bg">#d0d0d0</color>
+
+    <color name="cjx_colorPrimary">#202020</color>
     <color name="cjx_colorPrimaryDark">#1a1a1a</color>
-    <color name="cjx_colorAccent">#007aff</color>
+    <color name="cjx_colorAccent">#FF4081</color>
+
+    <color name="cjx_tab_text_color">#202020</color>
 
     <!-- 页面背景色 -->
     <color name="cjx_background_color">#f8f8f8</color>
