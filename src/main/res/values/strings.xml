@@ -1,0 +1,18 @@
+<resources>
+    <string name="cjx_preference">chenjinxu</string>
+
+    <string name="http_error">服务器超时</string>
+    <string name="http_steam_exception">提交失败,请重试</string>
+    <string name="http_exception">数据异常</string>
+
+    <string name="button_get_code">点击获取验证码</string>
+    <string name="button_sure">确定</string>
+    <string name="button_cancel">取消</string>
+    <string name="select_photo_upload">(已选中%d张) 立即上传</string>
+    <string name="upload_progress_format">上传：%1$d%%</string>
+
+    <string name="register_phone_hint">请输入手机号</string>
+    <string name="register_true_code_null_hint">请先获取验证码</string>
+    <string name="register_code_null_hint">请输入验证码</string>
+    <string name="register_code_error_hint">验证码错误</string>
+</resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/data_tv_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/bigger_margin"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_six" />
+
+    <TextView
+        android:id="@+id/data_tv_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/bigger_margin"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_six" />
+
+    <TextView
+        android:id="@+id/data_tv_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/bigger_margin"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_six" />
+
+    <TextView
+        android:id="@+id/data_tv_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/bigger_margin"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_six" />
+
+    <TextView
+        android:id="@+id/data_tv_5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/bigger_margin"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_six" />
+
+    <TextView
+        android:id="@+id/data_tv_6"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/bigger_margin"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_six" />
+
+    <TextView
+        android:id="@+id/data_tv_7"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="@dimen/bigger_margin"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_six"/>
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cjx_background_color"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_view" />
+
+    <GridView
+        android:id="@+id/photo_select_folder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/auto_margin"
+        android:layout_marginRight="@dimen/auto_margin"
+        android:layout_weight="1.0"
+        android:cacheColorHint="@android:color/transparent"
+        android:horizontalSpacing="@dimen/auto_margin"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="2" />
+
+    <GridView
+        android:id="@+id/photo_select_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/auto_margin"
+        android:layout_marginRight="@dimen/auto_margin"
+        android:layout_weight="1.0"
+        android:cacheColorHint="@android:color/transparent"
+        android:horizontalSpacing="@dimen/auto_margin"
+        android:listSelector="@android:color/transparent"
+        android:numColumns="3"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/photo_select_tip"
+        style="@style/button_bottom_style"
+        android:visibility="gone" />
+
+</LinearLayout>
