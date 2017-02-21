@@ -66,41 +66,54 @@ public class MyCallback implements Callback {
         if (activity == null) {
             return;
         }
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (r == null) {
+        if (r == null) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
                     callbackInterface.error();
                     activity.showToast(activity.getString(R.string.http_exception));
-                    return;
                 }
-                switch (r.code) {
-                    case Code.SUCCESS:
-                        callbackInterface.success(r);
-                        break;
-                    case Code.TOKEN_INVALID:
-                        ((MyApplication) activity.getApplication()).setUser(null);
-                        HttpUtils.getInstance().clearCookie();
-                        SharedPreferences sharedPreferences = activity.getSharedPreferences(
-                                activity.getString(R.string.cjx_preference), Activity.MODE_PRIVATE);
-                        String oldAcc = sharedPreferences.getString(MyApplication.PREFERENCE_ACCOUNT, null);
+            });
+        } else {
+            if (r.code == Code.SUCCESS) {
+                final Object obj = callbackInterface.parser(r); // 异步解析数据
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        callbackInterface.success(obj);
+                    }
+                });
+            } else { // 提示错误信息
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        switch (r.code) {
+                            case Code.TOKEN_INVALID:
+                                ((MyApplication) activity.getApplication()).setUser(null);
+                                HttpUtils.getInstance().clearCookie();
+                                SharedPreferences sharedPreferences = activity.getSharedPreferences(
+                                        activity.getString(R.string.cjx_preference), Activity.MODE_PRIVATE);
+                                String oldAcc = sharedPreferences.getString(MyApplication.PREFERENCE_ACCOUNT, null);
 
-                        if (!TextUtils.isEmpty(oldAcc)) {
-                            String oldPwd = sharedPreferences.getString(MyApplication.PREFERENCE_ACCOUNT, null);
-                            autoLogin(oldAcc, oldPwd, request);
-                        } else {
-                            callbackInterface.error();
-                            activity.showToast(r.message);
-                            MyApplication.getInstance().startLogin();
+                                if (!TextUtils.isEmpty(oldAcc)) {
+                                    String oldPwd = sharedPreferences.getString(MyApplication.PREFERENCE_ACCOUNT, null);
+                                    autoLogin(oldAcc, oldPwd, request);
+                                } else {
+                                    callbackInterface.error();
+                                    activity.showToast(r.message);
+                                    MyApplication.getInstance().startLogin();
+                                }
+                                break;
+                            default:
+                                callbackInterface.error();
+                                activity.showToast(r.message);
+                                break;
                         }
-                        break;
-                    default:
-                        callbackInterface.error();
-                        activity.showToast(r.message);
-                        break;
-                }
+                    }
+                });
             }
-        });
+        }
+
     }
 
     private void autoLogin(String acc, String pwd, Request request) {

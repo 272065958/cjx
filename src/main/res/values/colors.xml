@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="cjx_title_bg">#d0d0d0</color>
+    <color name="cjx_title_bg">#3c8fd3</color>
 
-    <color name="cjx_colorPrimary">#202020</color>
-    <color name="cjx_colorPrimaryDark">#1a1a1a</color>
+    <color name="cjx_colorPrimary">#159ff9</color>
+    <color name="cjx_colorPrimaryDark">#1584b4</color>
     <color name="cjx_colorAccent">#FF4081</color>
 
+    <!-- tab字体色 -->
     <color name="cjx_tab_text_color">#202020</color>
+    <!-- tab背景色 -->
+    <color name="cjx_tab_background_color">#f8f8f8</color>
 
     <!-- 页面背景色 -->
-    <color name="cjx_background_color">#f8f8f8</color>
+    <color name="cjx_background_color">#e5e5e7</color>
     <!-- 文字主色 -->
     <color name="cjx_text_main_color">#717171</color>
     <!-- 文字深色 -->
     <color name="cjx_text_deep_color">#272727</color>
     <!-- 文字辅助色 -->
-    <color name="cjx_text_secondary_color">#b3b3b3</color>
+    <color name="cjx_text_secondary_color">#bdbdbd</color>
     <!-- 标题未选中色 -->
     <color name="cjx_text_title_color">#9e9e9f</color>
     <!-- 分隔线色 -->
-    <color name="cjx_divider_color">#c0c0c0</color>
+    <color name="cjx_divider_color">#e8e8e8</color>
     <!-- 点击效果 -->
     <color name="cjx_item_pressed_color">#44bdbdbd</color>
 

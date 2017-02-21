@@ -62,7 +62,7 @@ public class BaseActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             if (hasBack) {
-                toolbar.setNavigationIcon(R.drawable.back_icon);
+                toolbar.setNavigationIcon(R.drawable.white_back);
                 setSupportActionBar(toolbar);
                 if (backListener == null) {
                     toolbar.setNavigationOnClickListener(new View.OnClickListener() {

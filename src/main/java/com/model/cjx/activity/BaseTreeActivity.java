@@ -161,9 +161,13 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
         }
 
         @Override
-        public void success(ResponseBean response) {
-            ArrayList<?> list = JsonParser.getInstance().fromJson(response.datum, type);
-            onLoadResult(list, id);
+        public Object parser(ResponseBean response) {
+            return JsonParser.getInstance().fromJson(response.datum, type);
+        }
+
+        @Override
+        public void success(Object result) {
+            onLoadResult((ArrayList<?>)result, id);
         }
 
         @Override

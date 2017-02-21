@@ -1,6 +1,7 @@
 package com.model.cjx.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.AdapterView;
@@ -60,6 +61,14 @@ public abstract class BaseListActivity extends BaseActivity {
         loadView = findViewById(R.id.loading_view);
     }
 
+    // 设置listView的分割线
+    protected void setListViweDivider(Drawable divider, int dividerHeight) {
+        if (listView != null) {
+            listView.setDivider(divider);
+            listView.setDividerHeight(dividerHeight);
+        }
+    }
+
     // 隐藏加载控件
     protected void hideLoadView() {
         if (loadView.getVisibility() == View.VISIBLE) {
@@ -89,9 +98,13 @@ public abstract class BaseListActivity extends BaseActivity {
         }
 
         @Override
-        public void success(ResponseBean response) {
-            ArrayList<?> list = JsonParser.getInstance().fromJson(response.datum, type);
-            onLoadResult(list);
+        public Object parser(ResponseBean response) {
+            return JsonParser.getInstance().fromJson(response.datum, type);
+        }
+
+        @Override
+        public void success(Object result) {
+            onLoadResult((ArrayList<?>)result);
         }
 
         @Override

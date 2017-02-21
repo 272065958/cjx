@@ -17,17 +17,25 @@ import java.util.Stack;
 public abstract class BaseClassAdapter extends MyBaseAdapter implements View.OnClickListener {
     LinearLayout.LayoutParams itemParam, lineParams, rightParams;
     int columNum;
+    boolean showLine;
 
-    public BaseClassAdapter(ArrayList<?> list, BaseActivity context, int columNum, int contentWidth) {
+    public BaseClassAdapter(ArrayList<?> list, BaseActivity context, int columNum, int contentWidth, boolean showLine) {
         super(list, context);
         this.columNum = columNum;
         int viewSpace = context.getResources().getDimensionPixelOffset(R.dimen.divider_height);
-        int width = (contentWidth - (columNum - 1) * viewSpace) / columNum;
-        itemParam = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lineParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, viewSpace);
+        this.showLine = showLine;
+        if(showLine){
+            lineStack = new Stack<>();
+            lineParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, viewSpace);
+        }
         if(columNum > 1){
+            contentStack = new Stack<>();
+            int width = (contentWidth - (columNum - 1) * viewSpace) / columNum;
             rightParams = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
             rightParams.leftMargin = viewSpace;
+            itemParam = new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        }else{
+            itemParam = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }
 
@@ -64,8 +72,8 @@ public abstract class BaseClassAdapter extends MyBaseAdapter implements View.OnC
     protected abstract void bindItemData(int position, Object obj, ItemViewHolder holder);
 
     Stack<View> itemStack = new Stack<>();
-    Stack<View> lineStack = new Stack<>();
-    Stack<LinearLayout> contentStack = new Stack<>();
+    Stack<View> lineStack;
+    Stack<LinearLayout> contentStack;
 
     // 清空容器
     private void clearContentView(LinearLayout contentView){
@@ -101,7 +109,7 @@ public abstract class BaseClassAdapter extends MyBaseAdapter implements View.OnC
         int size = list.size();
         if(columNum == 1){ // 每个item一行
             for (int i = 0; i < size; i++) {
-                if (i > 0) {
+                if (showLine && i > 0) {
                     contentView.addView(getLineView(), lineParams);
                 }
                 View v1 = getItemView(position, list.get(i));
@@ -110,7 +118,7 @@ public abstract class BaseClassAdapter extends MyBaseAdapter implements View.OnC
         }else{
             int line = (int) Math.ceil(size / (float) columNum);
             for (int i = 0; i < line; i++) {
-                if (i > 0) {
+                if (showLine && i > 0) {
                     contentView.addView(getLineView(), lineParams);
                 }
                 int p = i * columNum;

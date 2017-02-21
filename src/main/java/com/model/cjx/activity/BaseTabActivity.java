@@ -212,9 +212,13 @@ public abstract class BaseTabActivity extends BaseActivity implements AdapterVie
         }
 
         @Override
-        public void success(ResponseBean response) {
-            ArrayList<?> list = JsonParser.getInstance().fromJson(response.datum, type);
-            onLoadResult(position, list);
+        public Object parser(ResponseBean response) {
+            return JsonParser.getInstance().fromJson(response.datum, type);
+        }
+
+        @Override
+        public void success(Object result) {
+            onLoadResult(position, (ArrayList<?>)result);
         }
 
         @Override

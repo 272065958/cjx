@@ -1,12 +1,17 @@
 package com.model.cjx.dialog;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Toast;
 
 import com.model.cjx.R;
 import com.model.cjx.component.NumberPickerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by cjx on 2016/2/24.
@@ -14,10 +19,13 @@ import java.util.Calendar;
  */
 public class DateSelectDialog extends CustomDialog implements View.OnClickListener, NumberPickerView.OnValueChangeListenerRelativeToRaw {
 
-    DateType dateType;
+    DateType dateType = DateType.NORMAL;
+    DateType currentType;
+    Date currentDate;
+    String splite = "-";
 
     public enum ViewType {
-        DATE_SELECT, TIME_SELECT, DATE_TO_HOUR_SELECT, DATE_TO_MINUTE_SELECT
+        MONTH_SELECT, DATE_SELECT, TIME_SELECT, DATE_TO_HOUR_SELECT, DATE_TO_MINUTE_SELECT
     }
 
     public enum DateType {
@@ -29,14 +37,22 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
     public DateSelectDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_date_select);
-
         findViewById(R.id.pick_comfirm).setOnClickListener(this);
-
     }
 
-    public DateSelectDialog setDateType(ViewType viewType, DateType dateType) {
+    public DateSelectDialog setDateType(DateType dateType) {
+        this.dateType = dateType;
+        return this;
+    }
+
+    public DateSelectDialog setViewType(ViewType viewType, String splite) {
+        this.splite = splite;
         Calendar c = Calendar.getInstance();
         switch (viewType) {
+            case MONTH_SELECT:
+                setDate(c.get(Calendar.YEAR),
+                        c.get(Calendar.MONTH) + 1, -1);
+                break;
             case DATE_SELECT:
                 setDate(c.get(Calendar.YEAR),
                         c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH));
@@ -53,7 +69,6 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
                         c.get(Calendar.MONTH) + 1, c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE));
                 break;
         }
-        this.dateType = dateType;
         return this;
     }
 
@@ -93,17 +108,19 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
             monthView.setDisplayedValues(displayedValues);
             monthView.setHintText("月");
             monthView.setValue(month - 1);
-            // day
-            dayView = (NumberPickerView) findViewById(R.id.day_picker);
-            dayView.setVisibility(View.VISIBLE);
-            int dayCount = getDayCount(year, month);
-            displayedValues = new String[dayCount];
-            for (int i = 0; i < dayCount; i++) {
-                displayedValues[i] = String.valueOf(i + 1);
+            if (day != -1) {
+                // day
+                dayView = (NumberPickerView) findViewById(R.id.day_picker);
+                dayView.setVisibility(View.VISIBLE);
+                int dayCount = getDayCount(year, month);
+                displayedValues = new String[dayCount];
+                for (int i = 0; i < dayCount; i++) {
+                    displayedValues[i] = String.valueOf(i + 1);
+                }
+                dayView.setDisplayedValues(displayedValues);
+                dayView.setHintText("日");
+                dayView.setValue(day - 1);
             }
-            dayView.setDisplayedValues(displayedValues);
-            dayView.setHintText("日");
-            dayView.setValue(day - 1);
         }
         if (hour != -1) {
             hourView = (NumberPickerView) findViewById(R.id.hour_picker);
@@ -135,11 +152,27 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
     }
 
     @Override
+    public void show() {
+        this.currentType = null;
+        this.currentDate = null;
+        super.show();
+    }
+
+    public void show(@NonNull DateType currentType, @NonNull Date currentDate) {
+        this.currentType = currentType;
+        this.currentDate = currentDate;
+        super.show();
+    }
+
+    @Override
     public void onClick(View v) {
-        if (listener != null) {
-            listener.select(getTime("-"));
+        String time = getTime(splite);
+        if (time != null) {
+            if (listener != null) {
+                listener.select(time);
+            }
+            dismiss();
         }
-        dismiss();
     }
 
     @Override
@@ -150,17 +183,19 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
             month = Integer.parseInt(displayedValues[newPickedIndex]);
         } else {
             month = Integer.parseInt(monthView.getContentByCurrValue());
-            if(month != 2){ // 如果是2月的话, 需要计算是否闺年
-                return ;
+            if (month != 2) { // 如果是2月的话, 需要计算是否闺年
+                return;
             }
         }
-        int dayCount = getDayCount(Integer.parseInt(yearView.getContentByCurrValue()), month);
-        if (dayView.getDisplayedValues().length != dayCount) {
-            String[] newValues = new String[dayCount];
-            for (int i = 0; i < dayCount; i++) {
-                newValues[i] = String.valueOf(i + 1);
+        if (dayView != null) {
+            int dayCount = getDayCount(Integer.parseInt(yearView.getContentByCurrValue()), month);
+            if (dayView.getDisplayedValues().length != dayCount) {
+                String[] newValues = new String[dayCount];
+                for (int i = 0; i < dayCount; i++) {
+                    newValues[i] = String.valueOf(i + 1);
+                }
+                dayView.setDisplayedValues(newValues);
             }
-            dayView.setDisplayedValues(newValues);
         }
     }
 
@@ -206,6 +241,7 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
      * @return
      */
     private String getTime(String split) {
+        StringBuffer formatBuffer = new StringBuffer();
         StringBuilder sb = new StringBuilder();
         if (yearView != null) {
             sb.append(yearView.getContentByCurrValue());
@@ -215,12 +251,16 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
                 sb.append("0");
             }
             sb.append(month);
-            sb.append(split);
-            String day = dayView.getContentByCurrValue();
-            if (day.length() < 2) {
-                sb.append("0");
+            formatBuffer.append("yyyy").append(split).append("MM");
+            if (dayView != null) {
+                sb.append(split);
+                String day = dayView.getContentByCurrValue();
+                if (day.length() < 2) {
+                    sb.append("0");
+                }
+                sb.append(day);
+                formatBuffer.append(split).append("dd");
             }
-            sb.append(day);
         }
         if (hourView != null) {
             if (sb.length() > 0) {
@@ -241,7 +281,55 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
             } else {
                 sb.append("00");
             }
+            formatBuffer.append(" hh:mm");
         }
-        return sb.toString();
+        String time = sb.toString();
+        if(currentType == null && dateType == DateType.NORMAL){
+            return time;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(formatBuffer.toString());
+        Date selectDate = null;
+        try {
+            selectDate = sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if(selectDate == null){
+            Toast.makeText(getContext(), "time dialog error", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        if(currentType != null){
+            switch (currentType) {
+                case FETURE:
+                    if (selectDate.before(currentDate)) {
+                        time = null;
+                        Toast.makeText(getContext(), "选择时间不能早于开始时间", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case PAST:
+                    if (selectDate.after(currentDate)) {
+                        time = null;
+                        Toast.makeText(getContext(), "选择时间不能晚于结束时间", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
+        }
+        if (dateType != DateType.NORMAL && time != null) {
+            switch (dateType) {
+                case FETURE:
+                    if (selectDate.before(new Date())) {
+                        time = null;
+                        Toast.makeText(getContext(), "选择时间不能早于当前时间", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case PAST:
+                    if (selectDate.after(new Date())) {
+                        time = null;
+                        Toast.makeText(getContext(), "选择时间不能晚于当前时间", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
+        }
+        return time;
     }
 }

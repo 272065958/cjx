@@ -4,6 +4,7 @@
     <string name="http_error">服务器超时</string>
     <string name="http_steam_exception">提交失败,请重试</string>
     <string name="http_exception">数据异常</string>
+    <string name="press_to_exit">再按一次返回键退出程序</string>
 
     <string name="button_get_code">点击获取验证码</string>
     <string name="button_sure">确定</string>
