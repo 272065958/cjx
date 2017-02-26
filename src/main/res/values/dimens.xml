@@ -17,7 +17,7 @@
 
     <dimen name="text_size_normal">18sp</dimen>
     <dimen name="text_size_big">22sp</dimen>
-    <dimen name="text_size_big_big">30sp</dimen>
+    <dimen name="text_size_big_big">35sp</dimen>
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="tab_text_size">11sp</dimen>
     <dimen name="text_size_more_small">10sp</dimen>

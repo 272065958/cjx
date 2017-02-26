@@ -54,7 +54,6 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
         if (tabLayout != null && tabLayout.getTabCount() > 1) {
             int position = tabLayout.getTabCount() - 1;
             tabLayout.removeTabAt(position);
-            navigationChange(position - 1);
         } else {
             super.onBackPressed();
         }
@@ -120,11 +119,18 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
 
     // 点击导航栏后更新页面数据
     protected void navigationChange(int position) {
-        loadView.setVisibility(View.GONE);
-        emptyView.setVisibility(View.GONE);
-        listView.setVisibility(View.VISIBLE);
-        listView.setTag(idList.get(position));
-        adapter.notifyDataSetChanged(treeList.get(position));
+        int size = idList.size();
+        if(size > position){
+            loadView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE);
+            listView.setVisibility(View.VISIBLE);
+            listView.setTag(idList.get(position));
+            adapter.notifyDataSetChanged(treeList.get(position));
+            for(int i=position+1; i<size; i++){
+                idList.delete(i);
+                treeList.delete(i);
+            }
+        }
     }
 
     // 获取缓存的列表数据
@@ -184,7 +190,6 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
         if (adapter == null) {
             adapter = getMyBaseAdapter(list);
             listView.setAdapter(adapter);
-            listView.setOnItemClickListener(this);
         } else {
             adapter.notifyDataSetChanged(list);
         }
