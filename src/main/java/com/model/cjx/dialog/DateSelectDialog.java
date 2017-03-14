@@ -19,10 +19,10 @@ import java.util.Date;
  */
 public class DateSelectDialog extends CustomDialog implements View.OnClickListener, NumberPickerView.OnValueChangeListenerRelativeToRaw {
 
-    DateType dateType = DateType.NORMAL;
-    DateType currentType;
-    Date currentDate;
-    String splite = "-";
+    private DateType dateType = DateType.NORMAL;
+    private DateType currentType;
+    private Date currentDate;
+    private String splite = "-";
 
     public enum ViewType {
         MONTH_SELECT, DATE_SELECT, TIME_SELECT, DATE_TO_HOUR_SELECT, DATE_TO_MINUTE_SELECT

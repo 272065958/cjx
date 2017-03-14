@@ -1,0 +1,33 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fab_margin">24dp</dimen>
+    <dimen name="double_fab_margin">48dp</dimen>
+    <dimen name="auto_margin">12dp</dimen>
+    <dimen name="bigger_margin">18dp</dimen>
+    <dimen name="half_bigger_margin">9dp</dimen>
+    <dimen name="item_height">67.5dp</dimen>
+    <dimen name="button_height">51dp</dimen>
+    <dimen name="icon_size">45dp</dimen>
+    <dimen name="tab_icon_size">30dp</dimen>
+    <dimen name="refresh_hight">105dp</dimen>
+    <dimen name="refresh_content_hight">129dp</dimen>
+    <dimen name="tab_height">60dp</dimen>
+    <dimen name="upload_image_size">120dp</dimen>
+    <dimen name="header_size">75dp</dimen>
+
+    <dimen name="text_size_normal">25sp</dimen>
+    <dimen name="text_size_big">31sp</dimen>
+    <dimen name="text_size_big_big">50sp</dimen>
+    <dimen name="text_size_small">17sp</dimen>
+    <dimen name="tab_text_size">15sp</dimen>
+    <dimen name="text_size_more_small">12sp</dimen>
+    <dimen name="text_size_big_small">10sp</dimen>
+    <dimen name="text_size_middle">18sp</dimen>
+    <dimen name="text_size_six">20sp</dimen>
+
+
+    <dimen name="divider_height">1.5dp</dimen>
+    <dimen name="pixels_height">2px</dimen>
+    <dimen name="block_line_height">4dp</dimen>
+    <dimen name="text_margin">6dp</dimen>
+</resources>
