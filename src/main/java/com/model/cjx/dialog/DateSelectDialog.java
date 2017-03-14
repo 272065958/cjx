@@ -32,7 +32,7 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
         FETURE, PAST, NORMAL
     }
 
-    NumberPickerView yearView, monthView, dayView, hourView, minuteView;
+    private NumberPickerView yearView, monthView, dayView, hourView, minuteView;
 
     public DateSelectDialog(Context context) {
         super(context);

@@ -12,8 +12,8 @@ import java.lang.reflect.Type;
  * Created by cjx on 2016/7/13.
  */
 public class JsonParser {
-    static JsonParser instance;
-    Gson gson;
+    private static JsonParser instance;
+    private Gson gson;
     private JsonParser() {
         gson = new Gson();
     }

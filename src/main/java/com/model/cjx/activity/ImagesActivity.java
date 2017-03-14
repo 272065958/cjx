@@ -20,6 +20,8 @@ import com.bumptech.glide.Glide;
 import com.model.cjx.R;
 import com.model.cjx.component.TouchImageView;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by cjx  图片列表界面
@@ -28,6 +30,7 @@ public class ImagesActivity extends BaseActivity {
 	ViewPager vp;
 	View[] views;
 	String[] photos; // 存储图片的地址
+	ArrayList<String> photoList;
 	int screenWidth = 0, pageCount = 0;
 	TextView pageTv;
 
@@ -64,17 +67,21 @@ public class ImagesActivity extends BaseActivity {
 		vp = (ViewPager) findViewById(R.id.images_view);
 		pageTv = (TextView) findViewById(R.id.images_page);
 		Intent intent = getIntent();
-		photos = intent.getStringArrayExtra("photo");
 		int page = intent.getIntExtra("page", 0);
-		loadPicture(photos, page);
+		if(intent.hasExtra("photoList")){
+			photoList = intent.getStringArrayListExtra("photoList");
+		}else{
+			photos = intent.getStringArrayExtra("photo");
+		}
+		loadPicture(page);
 	}
 
 	@SuppressWarnings("deprecation")
-	private void loadPicture(String[] photos, int page) {
-		if (photos == null || photos.length == 0) {
+	private void loadPicture(int page) {
+		pageCount = photos == null ? (photoList == null ? 0 : photoList.size()) : photos.length;
+		if (pageCount == 0) {
 			return;
 		}
-		pageCount = photos.length;
 		pageTv.setText("1/" + pageCount);
 		int viewLength = pageCount;
 		// 最多用3个view来循环显示图片
@@ -91,7 +98,7 @@ public class ImagesActivity extends BaseActivity {
 			views[i] = v;
 		}
 		ImagePagerAdapter adapter = new ImagePagerAdapter(ImagesActivity.this,
-				views, photos);
+				views, photos, photoList);
 		vp.setAdapter(adapter);
 		vp.setOnPageChangeListener(new OnPageChangeListener() {
 			@Override
@@ -192,12 +199,23 @@ public class ImagesActivity extends BaseActivity {
 		View[] views;
 		int photoCount = 0;
 		String[] photos;
+		ArrayList<String> photoList;
 		Activity context;
 
-		public ImagePagerAdapter(Activity context, View[] l, String[] photos) {
+		public ImagePagerAdapter(Activity context, View[] l, String[] photos, ArrayList<String> photoList) {
 			this.context = context;
-			this.photoCount = photos.length;
-			this.photos = photos;
+			if(photoList != null){
+				this.photoList = photoList;
+				this.photoCount = photoList.size();
+			}else{
+				if(photos == null) {
+					this.photos = new String[0];
+					this.photoCount = 0;
+				}else {
+					this.photos = photos;
+					this.photoCount = photos.length;
+				}
+			}
 			views = l;
 		}
 
@@ -218,7 +236,7 @@ public class ImagesActivity extends BaseActivity {
 			TouchImageView image = (TouchImageView) v
 					.findViewById(R.id.image_content);
 			container.addView(v);
-			String url = photos[position];
+			String url = photoList == null ? photos[position] : photoList.get(position);
 			Glide.with(context).load(url).into(image);
 			return v;
 		}

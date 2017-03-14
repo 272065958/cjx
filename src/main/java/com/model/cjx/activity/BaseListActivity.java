@@ -81,7 +81,7 @@ public abstract class BaseListActivity extends BaseActivity {
     }
 
     // 加载数据完成后调用
-    protected void onLoadResult(ArrayList<?> list){
+    protected void onLoadResult(ArrayList list){
         hideLoadView();
         displayData(list);
     }
@@ -104,7 +104,7 @@ public abstract class BaseListActivity extends BaseActivity {
 
         @Override
         public void success(Object result) {
-            onLoadResult((ArrayList<?>)result);
+            onLoadResult((ArrayList)result);
         }
 
         @Override
@@ -116,7 +116,7 @@ public abstract class BaseListActivity extends BaseActivity {
     MyBaseAdapter adapter;
 
     // 显示数据
-    protected void displayData(ArrayList<?> list) {
+    protected void displayData(ArrayList list) {
         if (adapter == null) {
             adapter = getMyBaseAdapter(list);
             listView.setAdapter(adapter);
@@ -138,7 +138,7 @@ public abstract class BaseListActivity extends BaseActivity {
         }
     }
 
-    protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList<?> list);
+    protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList list);
 
     // 加载数据
     protected abstract void loadData();

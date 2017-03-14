@@ -1,9 +1,12 @@
 package com.model.cjx.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
@@ -11,6 +14,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -44,6 +50,8 @@ import java.util.List;
  * Created by cjx  选择手机图片界面
  */
 public class ImageSelectActivity extends BaseActivity implements OnClickListener {
+    final int REQUEST_STORE_PERMISSION = 101;
+
     List<FileBean> folderList;
     GridView folderGrid, imageGrid;
     TextView uploadTv;
@@ -63,38 +71,18 @@ public class ImageSelectActivity extends BaseActivity implements OnClickListener
                 onBackPressed();
             }
         }, "选择图片");
-        // 一个显示文件夹的gridview 一个显示图片列表的gridview
-        folderGrid = (GridView) findViewById(R.id.photo_select_folder);
-        imageGrid = (GridView) findViewById(R.id.photo_select_image);
-        imageGrid.setOnItemClickListener(new OnItemClickListener() {
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                if (uploadTv != null) {
-                    uploadTv.setText(String.format(getString(R.string.select_photo_upload),
-                            imageAdapter.clickAt(view, position)));
-                } else {
-                    String path = (String) view.getTag(R.id.photo_select_image);
-                    Intent data = new Intent();
-                    data.putExtra("photo", new String[]{path});
-                    setResult(RESULT_OK, data);
-                    finish();
-                }
+        // 检查是否有读写文件到sdcard
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                explainDialog();
+                return;
             }
-        });
-
-        String action = getIntent().getAction();
-        if (action == null) { // 这里控制是否多选图片  没有action表示可以多选
-            uploadTv = (TextView) findViewById(R.id.photo_select_tip);
-            uploadTv.setOnClickListener(this);
-            uploadTv.setVisibility(View.VISIBLE);
-            uploadTv.setText(String.format(getString(R.string.select_photo_upload), 0));
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    REQUEST_STORE_PERMISSION);
+        } else {
+            initView();
         }
-        DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
-        screenWidth = displayMetrics.widthPixels;
-
-        loadImage();
     }
 
     @Override
@@ -148,6 +136,52 @@ public class ImageSelectActivity extends BaseActivity implements OnClickListener
                 finish();
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_STORE_PERMISSION) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                finish();
+            } else {
+                initView();
+            }
+        }
+    }
+
+    private void initView() {
+        // 一个显示文件夹的gridview 一个显示图片列表的gridview
+        folderGrid = (GridView) findViewById(R.id.photo_select_folder);
+        imageGrid = (GridView) findViewById(R.id.photo_select_image);
+        imageGrid.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                if (uploadTv != null) {
+                    uploadTv.setText(String.format(getString(R.string.select_photo_upload),
+                            imageAdapter.clickAt(view, position)));
+                } else {
+                    String path = (String) view.getTag(R.id.photo_select_image);
+                    Intent data = new Intent();
+                    data.putExtra("photo", new String[]{path});
+                    setResult(RESULT_OK, data);
+                    finish();
+                }
+            }
+        });
+
+        String action = getIntent().getAction();
+        if (action == null) { // 这里控制是否多选图片  没有action表示可以多选
+            uploadTv = (TextView) findViewById(R.id.photo_select_tip);
+            uploadTv.setOnClickListener(this);
+            uploadTv.setVisibility(View.VISIBLE);
+            uploadTv.setText(String.format(getString(R.string.select_photo_upload), 0));
+        }
+        DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
+        screenWidth = displayMetrics.widthPixels;
+
+        loadImage();
     }
 
     private void showFolderView() {
@@ -238,9 +272,7 @@ public class ImageSelectActivity extends BaseActivity implements OnClickListener
                         String dirPath = parentFile.getAbsolutePath();
                         FileBean folder;
                         // 利用一个HashSet防止多次扫描同一个文件夹（不加这个判断，图片多起来还是相当恐怖的~~）
-                        if (mDirPaths.contains(dirPath)) {
-                            continue;
-                        } else {
+                        if (!mDirPaths.contains(dirPath)) {
                             mDirPaths.add(dirPath);
                             // 初始化imageFloder
                             folder = new FileBean();
@@ -278,6 +310,27 @@ public class ImageSelectActivity extends BaseActivity implements OnClickListener
                 });
             }
         }.start();
+    }
+
+    // 显示获取权限说明
+    private void explainDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.request_permission_tip))
+                .setPositiveButton(getString(R.string.button_sure), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //请求权限
+                        ActivityCompat.requestPermissions(ImageSelectActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                REQUEST_STORE_PERMISSION);
+                    }
+                })
+                .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .create().show();
     }
 
     class SelectFolderAdapter extends BaseAdapter {

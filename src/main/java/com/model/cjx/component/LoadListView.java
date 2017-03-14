@@ -9,10 +9,10 @@ import android.widget.ListView;
 /**
  * Created by cjx on 2016/10/24.
  */
-public class LoadListView extends ListView implements AbsListView.OnScrollListener{
+public class LoadListView extends ListView implements AbsListView.OnScrollListener {
 
     boolean isLoading = false;
-//    OnScrollListener scrollListener;
+    //    OnScrollListener scrollListener;
     FooterLoadListener loadListener;
     private int firstItem = 0, last, total;
 
@@ -24,9 +24,13 @@ public class LoadListView extends ListView implements AbsListView.OnScrollListen
         super(context, attrs);
     }
 
-    public void setFooterLoadListener(FooterLoadListener loadListener){
-        super.setOnScrollListener(this);
+    public void setFooterLoadListener(FooterLoadListener loadListener) {
         this.loadListener = loadListener;
+        if (loadListener == null) {
+            super.setOnScrollListener(null);
+        } else {
+            super.setOnScrollListener(this);
+        }
     }
 
     @Override
@@ -59,14 +63,14 @@ public class LoadListView extends ListView implements AbsListView.OnScrollListen
 //        scrollListener = l;
 //    }
 
-    private void footerLoad(){
+    private void footerLoad() {
         isLoading = true;
         loadListener.loadMore();
     }
 
-    private void checkLoad(){
+    private void checkLoad() {
         int childCount = getChildCount();
-        if(childCount > 0){
+        if (childCount > 0) {
             View v = getChildAt(childCount - 1);
             if (v.getBottom() <= getHeight() + 3) {
                 footerLoad();
@@ -74,11 +78,11 @@ public class LoadListView extends ListView implements AbsListView.OnScrollListen
         }
     }
 
-    public void setFooterLoadState(boolean state){
+    public void setFooterLoadState(boolean state) {
         isLoading = state;
     }
 
-    public interface FooterLoadListener{
+    public interface FooterLoadListener {
         void loadMore();
     }
 }

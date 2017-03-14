@@ -6,6 +6,7 @@
     <string name="http_exception">数据异常</string>
     <string name="press_to_exit">再按一次返回键退出程序</string>
 
+    <string name="request_permission_tip">该功能需要读取内存卡权限，时候授权？</string>
     <string name="button_get_code">点击获取验证码</string>
     <string name="button_sure">确定</string>
     <string name="button_cancel">取消</string>
@@ -16,4 +17,6 @@
     <string name="register_true_code_null_hint">请先获取验证码</string>
     <string name="register_code_null_hint">请输入验证码</string>
     <string name="register_code_error_hint">验证码错误</string>
+
+
 </resources>

@@ -161,7 +161,7 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
         String id;
         Type type;
 
-        public MyLoadCallback(String id, Type type) {
+        MyLoadCallback(String id, Type type) {
             this.id = id;
             this.type = type;
         }

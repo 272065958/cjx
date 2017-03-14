@@ -1,11 +1,7 @@
 package com.model.cjx.fragment;
 
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.AdapterView;
 
@@ -84,7 +80,7 @@ public abstract class BaseListFragment extends BaseFragment {
 
     class BaseCallInterface implements MyCallbackInterface {
         Type type;
-        public BaseCallInterface(Type type){
+        BaseCallInterface(Type type){
             this.type = type;
         }
 
@@ -95,7 +91,7 @@ public abstract class BaseListFragment extends BaseFragment {
 
         @Override
         public void success(Object result) {
-            onLoadResult((ArrayList<?>)result);
+            onLoadResult((ArrayList)result);
         }
 
         @Override
@@ -107,7 +103,7 @@ public abstract class BaseListFragment extends BaseFragment {
     MyBaseAdapter adapter;
 
     // 显示数据
-    protected void displayData(ArrayList<?> list) {
+    protected void displayData(ArrayList list) {
         if (adapter == null) {
             adapter = getMyBaseAdapter(list);
             listView.setAdapter(adapter);
@@ -129,7 +125,7 @@ public abstract class BaseListFragment extends BaseFragment {
         }
     }
 
-    protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList<?> list);
+    protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList list);
 
     // 加载数据
     protected abstract void loadData();

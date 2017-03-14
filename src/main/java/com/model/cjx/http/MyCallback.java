@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.model.cjx.MyApplication;
 import com.model.cjx.R;
@@ -27,11 +26,11 @@ import okhttp3.Response;
  */
 public class MyCallback implements Callback {
 
-    BaseActivity activity;
-    MyCallbackInterface callbackInterface;
-    Request request;
+    private BaseActivity activity;
+    private MyCallbackInterface callbackInterface;
+    private Request request;
 
-    public MyCallback(BaseActivity activity, MyCallbackInterface callbackInterface, Request request) {
+    MyCallback(BaseActivity activity, MyCallbackInterface callbackInterface, Request request) {
         this.activity = activity;
         this.callbackInterface = callbackInterface;
         this.request = request;
@@ -39,7 +38,7 @@ public class MyCallback implements Callback {
 
     @Override
     public void onFailure(Call call, final IOException e) {
-        if (activity == null) {
+        if (activity.isFinishing()) {
             return;
         }
         activity.runOnUiThread(new Runnable() {
@@ -63,7 +62,7 @@ public class MyCallback implements Callback {
             // 保存异常信息到文件
             Tools.saveToFile(activity, "http_response", body);
         }
-        if (activity == null) {
+        if (activity.isFinishing()) {
             return;
         }
         if (r == null) {
@@ -113,7 +112,7 @@ public class MyCallback implements Callback {
                 });
             }
         }
-
+        response.close();
     }
 
     private void autoLogin(String acc, String pwd, Request request) {
@@ -125,7 +124,7 @@ public class MyCallback implements Callback {
         Callback callback;
         Request request;
 
-        public CustomCallback(Callback callback, Request request) {
+        CustomCallback(Callback callback, Request request) {
             this.callback = callback;
             this.request = request;
         }
@@ -137,8 +136,7 @@ public class MyCallback implements Callback {
 
         @Override
         public void onResponse(Call call, Response response) throws IOException {
-            Log.e("TAG", "auto login response");
-            if (activity == null || activity.isFinishing()) {
+            if (activity.isFinishing()) {
                 return;
             }
             final ResponseBean r = JsonParser.getInstance().getDatumResponse(response.body().string());
@@ -157,6 +155,7 @@ public class MyCallback implements Callback {
                     }
                 });
             }
+            response.close();
         }
     }
 }

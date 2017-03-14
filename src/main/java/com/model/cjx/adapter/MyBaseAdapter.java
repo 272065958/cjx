@@ -13,13 +13,13 @@ import java.util.ArrayList;
 /**
  * Created by cjx on 2016/8/3.
  */
-public abstract class MyBaseAdapter extends BaseAdapter {
+public abstract class MyBaseAdapter<T> extends BaseAdapter {
 
-    public ArrayList<?> list;
+    public ArrayList<T> list;
     public int count;
     public Activity context;
 
-    public MyBaseAdapter(ArrayList<?> list, Activity context) {
+    public MyBaseAdapter(ArrayList<T> list, Activity context) {
         this.list = list;
         count = this.list == null ? 0 : this.list.size();
         this.context = context;
@@ -54,7 +54,7 @@ public abstract class MyBaseAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void notifyDataSetChanged(ArrayList<?> list) {
+    public void notifyDataSetChanged(ArrayList list) {
         this.list = list;
         count = this.list == null ? 0 : this.list.size();
         notifyDataSetChanged();
