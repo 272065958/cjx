@@ -64,6 +64,11 @@ public abstract class BaseTabActivity extends BaseActivity implements TabLayout.
         return views;
     }
 
+    // 设置tab的文字
+    protected void setTabText(int position, String text){
+        tabLayout.getTabAt(position).setText(text);
+    }
+
     // 初始化标题
     protected abstract String[] initTitle();
 

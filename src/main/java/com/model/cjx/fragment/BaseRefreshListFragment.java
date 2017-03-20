@@ -1,4 +1,4 @@
-package com.model.cjx.activity;
+package com.model.cjx.fragment;
 
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.AdapterView;
@@ -6,15 +6,14 @@ import android.widget.AdapterView;
 import com.model.cjx.R;
 
 /**
- * Created by cjx on 2016/10/28.
- * 列表基类，可以设置是否加载下一页和下拉刷新功能
+ * Created by cjx on 2017/2/20.
  */
-public abstract class BaseRefreshListActivity extends BaseListActivity {
+public abstract class BaseRefreshListFragment extends BaseListFragment {
     protected SwipeRefreshLayout refreshLayout;
 
     protected void initListView(AdapterView.OnItemClickListener itemClickListener, boolean refresh, boolean loadnext) {
         initListView(itemClickListener, loadnext);
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_layout);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh_layout);
         if(refresh){
             refreshLayout.setColorSchemeResources(new int[]{R.color.cjx_colorPrimary});
             refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -35,5 +34,4 @@ public abstract class BaseRefreshListActivity extends BaseListActivity {
             refreshLayout.setRefreshing(false);
         }
     }
-
 }

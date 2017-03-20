@@ -60,6 +60,13 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void onDestroy() {
+        if (list != null) {
+            list.clear();
+        }
+        context = null;
+    }
+
     abstract protected View createView(Context context);
 
     abstract protected MyViewHolder bindViewHolder(View view);

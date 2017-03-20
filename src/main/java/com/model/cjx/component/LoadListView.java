@@ -12,9 +12,8 @@ import android.widget.ListView;
 public class LoadListView extends ListView implements AbsListView.OnScrollListener {
 
     boolean isLoading = false;
-    //    OnScrollListener scrollListener;
     FooterLoadListener loadListener;
-    private int firstItem = 0, last, total;
+    private int last, total;
 
     public LoadListView(Context context) {
         super(context);
@@ -24,20 +23,17 @@ public class LoadListView extends ListView implements AbsListView.OnScrollListen
         super(context, attrs);
     }
 
-    public void setFooterLoadListener(FooterLoadListener loadListener) {
-        this.loadListener = loadListener;
-        if (loadListener == null) {
+    public void setFooterLoadListener(FooterLoadListener loadListener){
+        if(loadListener == null){
             super.setOnScrollListener(null);
-        } else {
+        }else{
+            this.loadListener = loadListener;
             super.setOnScrollListener(this);
         }
     }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-//        if(scrollListener != null){
-//            scrollListener.onScrollStateChanged(view, scrollState);
-//        }
         if ((scrollState == SCROLL_STATE_FLING || scrollState == SCROLL_STATE_IDLE) && last == total && !isLoading) {
             checkLoad();
         }
@@ -45,9 +41,6 @@ public class LoadListView extends ListView implements AbsListView.OnScrollListen
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//        if(scrollListener != null){
-//            scrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-//        }
         if (totalItemCount == getHeaderViewsCount() + getFooterViewsCount())
             return;
         if (visibleItemCount == totalItemCount && !isLoading) {
@@ -55,22 +48,18 @@ public class LoadListView extends ListView implements AbsListView.OnScrollListen
         }
         total = totalItemCount;
         last = firstVisibleItem + visibleItemCount;
-        firstItem = firstVisibleItem;
     }
 
-//    @Override
-//    public void setOnScrollListener(OnScrollListener l) {
-//        scrollListener = l;
-//    }
-
-    private void footerLoad() {
-        isLoading = true;
-        loadListener.loadMore();
+    private void footerLoad(){
+        if(loadListener != null){
+            isLoading = true;
+            loadListener.loadMore(this);
+        }
     }
 
-    private void checkLoad() {
+    private void checkLoad(){
         int childCount = getChildCount();
-        if (childCount > 0) {
+        if(childCount > 0){
             View v = getChildAt(childCount - 1);
             if (v.getBottom() <= getHeight() + 3) {
                 footerLoad();
@@ -78,11 +67,12 @@ public class LoadListView extends ListView implements AbsListView.OnScrollListen
         }
     }
 
-    public void setFooterLoadState(boolean state) {
+    public void setFooterLoadState(boolean state){
         isLoading = state;
+
     }
 
-    public interface FooterLoadListener {
-        void loadMore();
+    public interface FooterLoadListener{
+        void loadMore(LoadListView view);
     }
 }

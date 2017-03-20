@@ -164,7 +164,7 @@ public class CalendarActivity extends BaseActivity {
             return v;
         }
 
-        public void destroy() {
+        void destroy() {
             list.clear();
             select.clear();
         }
