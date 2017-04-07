@@ -9,8 +9,8 @@ import android.view.ViewGroup;
  * 轮播设配器
  */
 public class MyPagerAdapter extends PagerAdapter {
-    View[] views;
-    String[] titles;
+    private View[] views;
+    private String[] titles;
     public MyPagerAdapter(View[] views, String[] titles) {
         this.views = views;
         this.titles = titles;

@@ -17,6 +17,8 @@
     <string name="register_true_code_null_hint">请先获取验证码</string>
     <string name="register_code_null_hint">请输入验证码</string>
     <string name="register_code_error_hint">验证码错误</string>
+    <string name="tip_title">提示</string>
+    <string name="activity_exit">是否推出当前界面?</string>
 
 
 </resources>

@@ -13,9 +13,9 @@ import java.util.ArrayList;
 /**
  * Created by cjx on 2016/9/30.
  */
-public class TreeAdapter extends MyBaseAdapter {
+public class TreeAdapter<T> extends MyBaseAdapter {
 
-    public TreeAdapter(ArrayList<?> list, BaseActivity context) {
+    public TreeAdapter(ArrayList<T> list, BaseActivity context) {
         super(list, context);
     }
 
@@ -37,10 +37,10 @@ public class TreeAdapter extends MyBaseAdapter {
         ((ViewHolder) holder).nameView.setText(tb.getName());
     }
 
-    class ViewHolder extends MyViewHolder {
+    private class ViewHolder extends MyViewHolder {
         TextView nameView;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
         }
     }

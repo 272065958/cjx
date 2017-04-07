@@ -51,7 +51,7 @@ public abstract class BaseTabActivity extends BaseActivity implements TabLayout.
         MyPagerAdapter adapter = new MyPagerAdapter(initItemView(pageCount), titles);
         viewPager.setAdapter(adapter);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setOnTabSelectedListener(this);
+        tabLayout.addOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(viewPager);
     }
 
@@ -66,7 +66,10 @@ public abstract class BaseTabActivity extends BaseActivity implements TabLayout.
 
     // 设置tab的文字
     protected void setTabText(int position, String text){
-        tabLayout.getTabAt(position).setText(text);
+        TabLayout.Tab tab = tabLayout.getTabAt(position);
+        if(tab != null){
+            tab.setText(text);
+        }
     }
 
     // 初始化标题

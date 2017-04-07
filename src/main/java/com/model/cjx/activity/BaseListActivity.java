@@ -2,9 +2,9 @@ package com.model.cjx.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.AdapterView;
 
 import com.model.cjx.R;
 import com.model.cjx.adapter.MyBaseAdapter;
@@ -26,10 +26,15 @@ public abstract class BaseListActivity extends BaseActivity {
     protected LoadListView listView;
     protected View loadView, emptyView, loadNextView;
 
-    AdapterView.OnItemClickListener itemClickListener;
     LoadListView.FooterLoadListener footerLoadListener;
 
     int page, limit;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        onCreateView();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -43,25 +48,28 @@ public abstract class BaseListActivity extends BaseActivity {
         }
     }
 
+    // 初始化界面
+    protected void onCreateView(){
+        setContentView(R.layout.activity_list_view);
+        initListView();
+        loadData();
+    }
+
     // 刷新界面
     protected void refresh(){
         if(openLoadMore){
             page = 1;
-            if(loadNextView != null && loadNextView.getVisibility() == View.VISIBLE){
-                loadNextView.setVisibility(View.GONE);
-            }
+            hideLoadNextView();
         }
     }
 
-    protected void initListView(AdapterView.OnItemClickListener itemClickListener, boolean openLoadMore) {
+    protected void initListView() {
         loadView = findViewById(R.id.loading_view);
         listView = (LoadListView) findViewById(R.id.list_view);
-        this.openLoadMore = openLoadMore;
         if(openLoadMore){
             page = 1;
             limit = 15;
         }
-        this.itemClickListener = itemClickListener;
         loadView = findViewById(R.id.loading_view);
     }
 
@@ -78,6 +86,11 @@ public abstract class BaseListActivity extends BaseActivity {
         if (loadView.getVisibility() == View.VISIBLE) {
             loadView.setVisibility(View.GONE);
         }
+        hideLoadNextView();
+    }
+
+    // 隐藏加载下一页的界面
+    private void hideLoadNextView(){
         if(loadNextView != null && loadNextView.getVisibility() == View.VISIBLE){
             loadNextView.setVisibility(View.GONE);
             listView.setFooterLoadState(false);
@@ -97,7 +110,7 @@ public abstract class BaseListActivity extends BaseActivity {
 
     class BaseCallInterface implements MyCallbackInterface {
         Type type;
-        public BaseCallInterface(Type type){
+        BaseCallInterface(Type type){
             this.type = type;
         }
 
@@ -124,9 +137,6 @@ public abstract class BaseListActivity extends BaseActivity {
         if (adapter == null) {
             adapter = getMyBaseAdapter(list);
             listView.setAdapter(adapter);
-            if(itemClickListener != null){
-                listView.setOnItemClickListener(itemClickListener);
-            }
         } else {
             if (!openLoadMore || page == 1) {
                 adapter.notifyDataSetChanged(list);
@@ -154,9 +164,9 @@ public abstract class BaseListActivity extends BaseActivity {
                         }
                     };
                 }
-                listView.setFooterLoadState(false);
                 listView.setFooterLoadListener(footerLoadListener);
             }
+            listView.setFooterLoadState(false);
         }
         if (adapter.getCount() == 0) {
             if(emptyView == null){

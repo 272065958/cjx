@@ -11,7 +11,7 @@ import com.model.cjx.component.LoadListView;
  * Created by cjx on 2016/6/1.
  * 用于左右滑动的tab页面基类
  */
-public abstract class BaseRefreshTabActivity extends BaseTabListActivity {
+public abstract class BaseTabRefreshActivity extends BaseTabListActivity {
 
     protected SwipeRefreshLayout[] refreshLayouts;
 
@@ -20,26 +20,11 @@ public abstract class BaseRefreshTabActivity extends BaseTabListActivity {
     protected View initPagerView(int i) {
         View v = View.inflate(this, R.layout.item_refresh_list_view, null);
         SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.refresh_layout);
-        refreshLayout.setColorSchemeResources(new int[]{R.color.cjx_colorPrimary});
+        refreshLayout.setColorSchemeResources(R.color.cjx_colorPrimary);
         refreshLayout.setOnRefreshListener(new MyRefreshListener(i));
         refreshLayouts[i] = refreshLayout;
 
-        LoadListView listView = (LoadListView) v.findViewById(R.id.list_view);
-        listView.setDivider(ContextCompat.getDrawable(this, R.drawable.listview_divider));
-        listView.setDividerHeight(getResources().getDimensionPixelOffset(R.dimen.auto_margin));
-        listView.setOnItemClickListener(this);
-        listView.setTag(true);
-        listViews[i] = listView;
-
-        loadViews[i] = v.findViewById(R.id.loading_view);
-        emptyViews[i] = v.findViewById(R.id.empty_view);
-        if (openLoadMore) {
-            listView.setTag(R.id.tag_type, i);
-            listView.setFooterLoadListener(footerLoadListener);
-            loadNextViews[i] = v.findViewById(R.id.loading_next_page);
-            page[i] = 1;
-            limit[i] = 15;
-        }
+        initListView(v, i);
         return v;
     }
 

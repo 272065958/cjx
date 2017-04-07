@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -12,6 +13,7 @@ import com.model.cjx.R;
 import com.model.cjx.adapter.MyBaseAdapter;
 import com.model.cjx.bean.ResponseBean;
 import com.model.cjx.bean.TreeBean;
+import com.model.cjx.dialog.TipDialog;
 import com.model.cjx.http.MyCallbackInterface;
 import com.model.cjx.util.JsonParser;
 
@@ -24,7 +26,7 @@ import java.util.ArrayList;
  */
 public abstract class BaseTreeActivity extends BaseActivity implements TabLayout.OnTabSelectedListener,
         AdapterView.OnItemClickListener {
-    protected SparseArray<ArrayList<?>> treeList;
+    protected SparseArray<ArrayList> treeList;
     protected SparseArray<String> idList;
 
     protected ListView listView;
@@ -33,6 +35,7 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
     protected TabLayout tabLayout;
     protected Intent currentIntent;
 
+    TipDialog exitDialog;
     protected MyBaseAdapter adapter;
 
     @Override
@@ -43,7 +46,11 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
         setToolBar(true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                if (tabLayout != null && tabLayout.getTabCount() > 1) {
+                    showExitDialog();
+                } else {
+                    finish();
+                }
             }
         }, currentIntent.getStringExtra("title"));
         initView();
@@ -87,11 +94,10 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
         loadView = findViewById(R.id.loading_view);
         listView = (ListView) findViewById(R.id.list_view);
         listView.setOnItemClickListener(this);
-        emptyView = findViewById(R.id.empty_view);
         listView.setDividerHeight(getResources().getDimensionPixelOffset(R.dimen.divider_height));
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         if (tabLayout != null) {
-            tabLayout.setOnTabSelectedListener(this);
+            tabLayout.addOnTabSelectedListener(this);
             tabLayout.addTab(tabLayout.newTab().setText(intent.getStringExtra("tab_name")));
         }
     }
@@ -112,25 +118,48 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
     protected void loadChildTree(String id) {
         listView.setTag(id); // 设置当前listview要显示的列表标识
         listView.setVisibility(View.GONE);
-        emptyView.setVisibility(View.GONE);
-
+        if (emptyView != null && emptyView.getVisibility() == View.VISIBLE) {
+            emptyView.setVisibility(View.GONE);
+        }
         loadList(id);
     }
 
     // 点击导航栏后更新页面数据
     protected void navigationChange(int position) {
         int size = idList.size();
-        if(size > position){
+        if (size > position) {
             loadView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.GONE);
+            if (emptyView != null && emptyView.getVisibility() == View.VISIBLE) {
+                emptyView.setVisibility(View.GONE);
+            }
             listView.setVisibility(View.VISIBLE);
             listView.setTag(idList.get(position));
             adapter.notifyDataSetChanged(treeList.get(position));
-            for(int i=position+1; i<size; i++){
+            for (int i = position + 1; i < size; i++) {
                 idList.delete(i);
                 treeList.delete(i);
             }
         }
+    }
+
+    // 显示未提交退出提示对话框
+    private void showExitDialog() {
+        if (exitDialog == null) {
+            exitDialog = new TipDialog(this);
+            exitDialog.setText(R.string.tip_title, R.string.activity_exit, R.string.button_sure, R.string.button_cancel).setTipComfirmListener(new TipDialog.ComfirmListener() {
+                @Override
+                public void comfirm() {
+                    exitDialog.dismiss();
+                    finish();
+                }
+
+                @Override
+                public void cancel() {
+                    exitDialog.dismiss();
+                }
+            });
+        }
+        exitDialog.show();
     }
 
     // 获取缓存的列表数据
@@ -173,7 +202,7 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
 
         @Override
         public void success(Object result) {
-            onLoadResult((ArrayList<?>)result, id);
+            onLoadResult((ArrayList<?>) result, id);
         }
 
         @Override
@@ -194,9 +223,18 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
             adapter.notifyDataSetChanged(list);
         }
         if (adapter.getCount() == 0) {
-            findViewById(R.id.empty_view).setVisibility(View.VISIBLE);
+            if (emptyView == null) {
+                ViewStub viewStub = (ViewStub) findViewById(R.id.empty_view);
+                if (viewStub != null) {
+                    emptyView = viewStub.inflate();
+                }
+            } else {
+                emptyView.setVisibility(View.VISIBLE);
+            }
         } else {
-            findViewById(R.id.empty_view).setVisibility(View.GONE);
+            if(emptyView != null && emptyView.getVisibility() == View.VISIBLE){
+                emptyView.setVisibility(View.GONE);
+            }
             listView.setVisibility(View.VISIBLE);
         }
     }
