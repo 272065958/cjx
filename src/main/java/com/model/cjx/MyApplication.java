@@ -53,4 +53,6 @@ public abstract class MyApplication extends Application{
     public abstract void startLogin();
 
     public abstract void autoLogin(MyCallback.CustomCallback myCallback, String account, String pwd);
+
+    public abstract boolean isLogin();
 }

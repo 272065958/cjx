@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -27,7 +27,7 @@ import java.util.TimerTask;
  */
 public class BaseActivity extends AppCompatActivity {
     public final int RESULT_LOGIN = 201;
-    TextView toolbarTitle;
+    protected TextView toolbarTitle;
     protected Toolbar toolbar;
     protected LoadDialog loadDialog;
     BroadcastReceiver refreshReceiver;
@@ -48,21 +48,21 @@ public class BaseActivity extends AppCompatActivity {
 
     private void setStatuuBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.cjx_colorPrimaryDark));
+            getWindow().setStatusBarColor(Color.BLACK);
         }
     }
 
     /**
      * 设置toolbar
-     * @param hasBack      是否包含返回按钮
+     * @param backRes      是否包含返回按钮
      * @param backListener 返回按钮监听
      * @param titleRes     标题的资源id
      */
-    public void setToolBar(boolean hasBack, View.OnClickListener backListener, Object titleRes) {
+    public void setToolBar(int backRes, View.OnClickListener backListener, Object titleRes) {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
-            if (hasBack) {
-                toolbar.setNavigationIcon(R.drawable.white_back);
+            if (backRes > 0) {
+                toolbar.setNavigationIcon(backRes);
                 setSupportActionBar(toolbar);
                 if (backListener == null) {
                     toolbar.setNavigationOnClickListener(new View.OnClickListener() {

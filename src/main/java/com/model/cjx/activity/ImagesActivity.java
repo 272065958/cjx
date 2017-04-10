@@ -46,7 +46,7 @@ public class ImagesActivity extends BaseActivity {
 		DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
 		screenWidth = displayMetrics.widthPixels;
 
-		setToolBar(true, null, -1);
+		setToolBar(R.drawable.white_back, null, -1);
 
 		findViews();
 		initAnimations();

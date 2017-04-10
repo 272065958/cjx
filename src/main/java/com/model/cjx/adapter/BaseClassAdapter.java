@@ -1,12 +1,12 @@
 package com.model.cjx.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.model.cjx.R;
-import com.model.cjx.activity.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -15,11 +15,11 @@ import java.util.Stack;
  * Created by cjx on 2016/12/29.
  */
 public abstract class BaseClassAdapter extends MyBaseAdapter implements View.OnClickListener {
-    LinearLayout.LayoutParams itemParam, lineParams, rightParams;
-    int columNum;
-    boolean showLine;
+    private LinearLayout.LayoutParams itemParam, lineParams, rightParams;
+    private int columNum;
+    private boolean showLine;
 
-    public BaseClassAdapter(ArrayList<?> list, BaseActivity context, int columNum, int contentWidth, boolean showLine) {
+    public BaseClassAdapter(ArrayList list, Activity context, int columNum, int contentWidth, boolean showLine) {
         super(list, context);
         this.columNum = columNum;
         int viewSpace = context.getResources().getDimensionPixelOffset(R.dimen.divider_height);
@@ -63,7 +63,7 @@ public abstract class BaseClassAdapter extends MyBaseAdapter implements View.OnC
 
     abstract protected void bindData(int position, ParentViewHolder holder);
 
-    abstract protected ArrayList<?> getItemList(int position);
+    abstract protected ArrayList getItemList(int position);
 
     // 创建childItem View
     protected abstract View createItemView(Context context);
@@ -71,9 +71,9 @@ public abstract class BaseClassAdapter extends MyBaseAdapter implements View.OnC
     // 填充ChildItem View的内容
     protected abstract void bindItemData(int position, Object obj, ItemViewHolder holder);
 
-    Stack<View> itemStack = new Stack<>();
-    Stack<View> lineStack;
-    Stack<LinearLayout> contentStack;
+    private Stack<View> itemStack = new Stack<>();
+    private Stack<View> lineStack;
+    private Stack<LinearLayout> contentStack;
 
     // 清空容器
     private void clearContentView(LinearLayout contentView){
@@ -101,7 +101,7 @@ public abstract class BaseClassAdapter extends MyBaseAdapter implements View.OnC
     }
 
     // 初始化显示childItem的容器
-    protected synchronized void initContentView(int position, LinearLayout contentView, ArrayList<?> list) {
+    private synchronized void initContentView(int position, LinearLayout contentView, ArrayList<?> list) {
         clearContentView(contentView);
         if (list == null || list.isEmpty()) {
             return;

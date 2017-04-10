@@ -88,14 +88,13 @@ public class MyCallback implements Callback {
                     public void run() {
                         switch (r.code) {
                             case Code.TOKEN_INVALID:
-                                ((MyApplication) activity.getApplication()).setUser(null);
+                                MyApplication.getInstance().setUser(null);
                                 HttpUtils.getInstance().clearCookie();
                                 SharedPreferences sharedPreferences = activity.getSharedPreferences(
                                         activity.getString(R.string.cjx_preference), Activity.MODE_PRIVATE);
                                 String oldAcc = sharedPreferences.getString(MyApplication.PREFERENCE_ACCOUNT, null);
-
                                 if (!TextUtils.isEmpty(oldAcc)) {
-                                    String oldPwd = sharedPreferences.getString(MyApplication.PREFERENCE_ACCOUNT, null);
+                                    String oldPwd = sharedPreferences.getString(MyApplication.PREFERENCE_PASSWORD, null);
                                     autoLogin(oldAcc, oldPwd, request);
                                 } else {
                                     callbackInterface.error();

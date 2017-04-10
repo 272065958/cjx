@@ -22,8 +22,8 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
     private DateType dateType = DateType.NORMAL;
     private DateType currentType;
     private Date currentDate;
-    private String splite = "-";
-
+    private String splite = "/";
+    private String errorTip;
     public enum ViewType {
         MONTH_SELECT, DATE_SELECT, TIME_SELECT, DATE_TO_HOUR_SELECT, DATE_TO_MINUTE_SELECT
     }
@@ -40,8 +40,9 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
         findViewById(R.id.pick_comfirm).setOnClickListener(this);
     }
 
-    public DateSelectDialog setDateType(DateType dateType) {
+    public DateSelectDialog setDateType(DateType dateType, String errorTip) {
         this.dateType = dateType;
+        this.errorTip = errorTip;
         return this;
     }
 
@@ -84,7 +85,7 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
         setDate(year, month, day, hour, -1);
     }
 
-    private void setDate(int year, int month, int day, int hour, int minute) {
+    public void setDate(int year, int month, int day, int hour, int minute) {
         if (year != -1) {
             // year
             yearView = (NumberPickerView) findViewById(R.id.year_picker);
@@ -131,7 +132,7 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
             }
             hourView.setDisplayedValues(displayedValues);
             hourView.setHintText("时");
-            hourView.setValue(hour - 1);
+            hourView.setValue(hour);
         }
         if (minute != -1) {
             minuteView = (NumberPickerView) findViewById(R.id.minute_picker);
@@ -158,9 +159,10 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
         super.show();
     }
 
-    public void show(@NonNull DateType currentType, @NonNull Date currentDate) {
+    public void show(@NonNull DateType currentType, @NonNull Date currentDate, String errorTip) {
         this.currentType = currentType;
         this.currentDate = currentDate;
+        this.errorTip = errorTip;
         super.show();
     }
 
@@ -281,7 +283,7 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
             } else {
                 sb.append("00");
             }
-            formatBuffer.append(" hh:mm");
+            formatBuffer.append(" HH:mm");
         }
         String time = sb.toString();
         if(currentType == null && dateType == DateType.NORMAL){
@@ -303,13 +305,13 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
                 case FETURE:
                     if (selectDate.before(currentDate)) {
                         time = null;
-                        Toast.makeText(getContext(), "选择时间不能早于开始时间", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), errorTip != null ? errorTip : "选择时间不能早于开始时间", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case PAST:
                     if (selectDate.after(currentDate)) {
                         time = null;
-                        Toast.makeText(getContext(), "选择时间不能晚于结束时间", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), errorTip != null ? errorTip : "选择时间不能晚于结束时间", Toast.LENGTH_SHORT).show();
                     }
                     break;
             }
@@ -319,13 +321,13 @@ public class DateSelectDialog extends CustomDialog implements View.OnClickListen
                 case FETURE:
                     if (selectDate.before(new Date())) {
                         time = null;
-                        Toast.makeText(getContext(), "选择时间不能早于当前时间", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), errorTip != null ? errorTip : "选择时间不能早于当前时间", Toast.LENGTH_SHORT).show();
                     }
                     break;
                 case PAST:
                     if (selectDate.after(new Date())) {
                         time = null;
-                        Toast.makeText(getContext(), "选择时间不能晚于当前时间", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), errorTip != null ? errorTip : "选择时间不能晚于当前时间", Toast.LENGTH_SHORT).show();
                     }
                     break;
             }

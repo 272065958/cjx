@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:text="没有数据.."
-    android:textColor="@color/cjx_text_deep_color"
-    android:textSize="@dimen/text_size_big" />
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/empty_icon"
+        android:layout_width="@dimen/header_size"
+        android:layout_height="@dimen/header_size"
+        android:layout_marginBottom="@dimen/auto_margin"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/empty_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="没有数据..."
+        android:textColor="@color/cjx_text_main_color"  />
+</LinearLayout>

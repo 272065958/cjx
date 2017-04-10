@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="cjx_title_bg">#159ff9</color>
+    <color name="cjx_title_bg">#fdfdfd</color>
 
-    <color name="cjx_colorPrimary">#159ff9</color>
-    <color name="cjx_colorPrimaryDark">#177fce</color>
+    <color name="cjx_colorPrimary">#FA615B</color>
+    <color name="cjx_colorPrimaryDark">#FF2F36</color>
     <color name="cjx_colorAccent">#FF4081</color>
 
     <!-- tab字体色 -->

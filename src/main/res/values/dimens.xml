@@ -6,7 +6,7 @@
     <dimen name="bigger_margin">12dp</dimen>
     <dimen name="half_bigger_margin">6dp</dimen>
     <dimen name="item_height">45dp</dimen>
-    <dimen name="button_height">34dp</dimen>
+    <dimen name="button_height">38dp</dimen>
     <dimen name="icon_size">30dp</dimen>
     <dimen name="tab_icon_size">20dp</dimen>
     <dimen name="refresh_hight">70dp</dimen>

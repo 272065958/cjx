@@ -121,6 +121,7 @@ public class HttpUtils {
 
     // 获取一个request
     private Request getRequest(String url, RequestBody body) {
+        Log.e("TAG", "url = "+url);
         Request.Builder builder = new Request.Builder();
         Request request = builder.url(url).post(body).build();
         return request;
