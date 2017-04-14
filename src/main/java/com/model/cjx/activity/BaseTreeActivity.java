@@ -43,7 +43,7 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
         super.onCreate(savedInstanceState);
         currentIntent = getIntent();
         setContentView(currentIntent.getIntExtra("view", R.layout.activity_tree_select));
-        setToolBar(R.drawable.white_back, new View.OnClickListener() {
+        setToolBar(true, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (tabLayout != null && tabLayout.getTabCount() > 1) {

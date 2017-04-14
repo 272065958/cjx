@@ -33,7 +33,7 @@ public class CalendarActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         Intent intent = getIntent();
-        setToolBar(R.drawable.white_back, null, "");
+        setToolBar(true, null, "选择日期");
 
         listView = (ListView) findViewById(R.id.list_view);
         // 默认选中的日期数组

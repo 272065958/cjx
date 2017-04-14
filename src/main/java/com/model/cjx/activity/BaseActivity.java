@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.model.cjx.MyApplication;
 import com.model.cjx.R;
 import com.model.cjx.dialog.LoadDialog;
 
@@ -29,7 +30,7 @@ public class BaseActivity extends AppCompatActivity {
     public final int RESULT_LOGIN = 201;
     protected TextView toolbarTitle;
     protected Toolbar toolbar;
-    protected LoadDialog loadDialog;
+    public LoadDialog loadDialog;
     BroadcastReceiver refreshReceiver;
     @Override
     public void setContentView(View view) {
@@ -54,15 +55,17 @@ public class BaseActivity extends AppCompatActivity {
 
     /**
      * 设置toolbar
-     * @param backRes      是否包含返回按钮
+     * @param showBack     是否显示返回按钮
      * @param backListener 返回按钮监听
      * @param titleRes     标题的资源id
      */
-    public void setToolBar(int backRes, View.OnClickListener backListener, Object titleRes) {
+    public void setToolBar(boolean showBack, View.OnClickListener backListener, Object titleRes) {
+        MyApplication app = MyApplication.getInstance();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundResource(app.getToolbarBg());
         if (toolbar != null) {
-            if (backRes > 0) {
-                toolbar.setNavigationIcon(backRes);
+            if (showBack) {
+                toolbar.setNavigationIcon(app.getBackRes());
                 setSupportActionBar(toolbar);
                 if (backListener == null) {
                     toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -86,7 +89,6 @@ public class BaseActivity extends AppCompatActivity {
                 }else{
                     toolbarTitle.setText((int)titleRes);
                 }
-
             }
         }
     }

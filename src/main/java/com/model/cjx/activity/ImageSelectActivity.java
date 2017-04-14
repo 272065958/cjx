@@ -65,7 +65,7 @@ public class ImageSelectActivity extends BaseActivity implements OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_select);
-        setToolBar(R.drawable.white_back, new OnClickListener() {
+        setToolBar(true, new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();

@@ -84,6 +84,29 @@ public class Tools {
         return expcetionPath;
     }
 
+    public static boolean compressImage(Bitmap src, String savePath, int quality) {
+        boolean result = false;
+        if (src != null) {
+            FileOutputStream fos = null;
+            try {
+                File f = new File(savePath);
+                fos = new FileOutputStream(f);
+                result = src.compress(Bitmap.CompressFormat.JPEG, quality, fos);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (fos != null) {
+                    try {
+                        fos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                src.recycle();
+            }
+        }
+        return result;
+    }
 
     // 返回服务器图片完整路径
     public static void setImage(Activity context, ImageView imageView, String path) {

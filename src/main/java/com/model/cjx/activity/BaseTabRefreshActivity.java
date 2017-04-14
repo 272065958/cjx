@@ -1,11 +1,9 @@
 package com.model.cjx.activity;
 
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.model.cjx.R;
-import com.model.cjx.component.LoadListView;
 
 /**
  * Created by cjx on 2016/6/1.

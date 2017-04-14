@@ -10,6 +10,7 @@
     <string name="button_get_code">点击获取验证码</string>
     <string name="button_sure">确定</string>
     <string name="button_cancel">取消</string>
+    <string name="button_save">保存</string>
     <string name="select_photo_upload">(已选中%d张) 立即上传</string>
     <string name="upload_progress_format">上传：%1$d%%</string>
 

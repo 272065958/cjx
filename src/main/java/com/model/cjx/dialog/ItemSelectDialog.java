@@ -19,9 +19,9 @@ import java.util.ArrayList;
  * Created by cjx on 2017/1/25.
  */
 public class ItemSelectDialog extends CustomDialog {
-    Activity context;
-    ListView listView;
-    int itemHeight;
+    private Activity context;
+    private ListView listView;
+    private int itemHeight;
     public ItemSelectDialog(Activity context, boolean showCancel) {
         super(context);
         this.context = context;
@@ -64,7 +64,7 @@ public class ItemSelectDialog extends CustomDialog {
     }
 
     class SelectAdapter extends MyBaseAdapter{
-        public SelectAdapter(ArrayList<?> list, Activity context) {
+        SelectAdapter(ArrayList<?> list, Activity context) {
             super(list, context);
         }
 

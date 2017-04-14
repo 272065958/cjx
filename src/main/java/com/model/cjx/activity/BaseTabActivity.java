@@ -36,6 +36,11 @@ public abstract class BaseTabActivity extends BaseActivity implements TabLayout.
     }
 
     @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
     protected void onDestroy() {
         if(viewPager.getAdapter() != null){
             viewPager.setAdapter(null);
