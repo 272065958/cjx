@@ -1,8 +1,6 @@
 package com.model.cjx;
 
 import android.app.Application;
-import android.os.Handler;
-import android.os.Message;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
 

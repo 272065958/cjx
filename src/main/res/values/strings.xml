@@ -21,5 +21,7 @@
     <string name="tip_title">提示</string>
     <string name="activity_exit">是否推出当前界面?</string>
 
-
+    <string name="order_nofinish">未完成</string>
+    <string name="order_finish">已完成</string>
+    <string name="order_cancel">已取消</string>
 </resources>

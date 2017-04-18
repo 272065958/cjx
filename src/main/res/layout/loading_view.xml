@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ProgressBar xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pb_progress"
-    android:layout_width="70dp"
-    android:layout_height="70dp"
+    android:layout_width="@dimen/refresh_hight"
+    android:layout_height="@dimen/refresh_hight"
     android:layout_centerHorizontal="true"
     android:indeterminateDrawable="@anim/rotate_load"
     android:indeterminateDuration="700" />

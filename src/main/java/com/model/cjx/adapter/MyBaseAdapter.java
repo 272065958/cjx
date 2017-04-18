@@ -17,9 +17,9 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
 
     public ArrayList<T> list;
     public int count;
-    public Activity context;
+    public Context context;
 
-    public MyBaseAdapter(ArrayList<T> list, Activity context) {
+    public MyBaseAdapter(ArrayList<T> list, Context context) {
         this.list = list;
         count = this.list == null ? 0 : this.list.size();
         this.context = context;
