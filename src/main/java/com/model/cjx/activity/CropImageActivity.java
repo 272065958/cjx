@@ -25,7 +25,7 @@ import com.model.cjx.util.Tools;
 /**
  * Created by cjx on 2016/12/14.
  */
-public class CropImageActivity extends BaseActivity {
+public class CropImageActivity extends BaseActivity implements View.OnClickListener {
 
     Runnable mRunFaceDetection;
     CropImageView cropImageView;
@@ -80,6 +80,7 @@ public class CropImageActivity extends BaseActivity {
             sHeight = app.getScreen_height() * 1.0f;
         }
         setContentView(R.layout.activity_cropimage);
+        findViewById(R.id.save).setOnClickListener(this);
         AsyncTask<Object, Void, Bitmap> dealTask = new AsyncTask<Object, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Object... params) {
@@ -233,7 +234,8 @@ public class CropImageActivity extends BaseActivity {
     }
 
     // 保存截图
-    public void save(View view) {
+    @Override
+    public void onClick(View view) {
         if (mSaving) {
             return;
         }

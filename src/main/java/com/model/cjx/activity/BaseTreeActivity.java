@@ -89,6 +89,11 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
 
     }
 
+    public void setThemeColor(int color){
+        tabLayout.setSelectedTabIndicatorColor(color);
+        tabLayout.setTabTextColors(tabLayout.getTabTextColors().getDefaultColor(), color);
+    }
+
     /**
      * 初始化界面控件
      */
