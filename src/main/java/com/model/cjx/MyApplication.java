@@ -1,10 +1,11 @@
 package com.model.cjx;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
 
-import com.model.cjx.http.MyCallback;
+import com.model.cjx.activity.BaseActivity;
 
 /**
  * Created by cjx on 2017/1/13.
@@ -18,6 +19,7 @@ public abstract class MyApplication extends Application{
     
     private static MyApplication instance;
     private int SCREEN_WIDTH = 0, SCREEN_HEIGHT = 0;
+    public String token;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -70,11 +72,9 @@ public abstract class MyApplication extends Application{
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    public abstract void setUser(String data);
+    public abstract void setUser(Object data);
 
-    public abstract void startLogin();
-
-    public abstract void autoLogin(MyCallback.CustomCallback myCallback, String account, String pwd);
+    public abstract void startLogin(BaseActivity activity);
 
     public abstract boolean isLogin();
 }

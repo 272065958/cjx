@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.model.cjx.MyApplication;
 import com.model.cjx.activity.BaseActivity;
 import com.model.cjx.util.Tools;
 
@@ -53,8 +54,8 @@ public class HttpUtils {
             return cookies != null ? cookies : new ArrayList<Cookie>();
         }
 
-        public void clearCookie(){
-            if(cookieStore != null){
+        public void clearCookie() {
+            if (cookieStore != null) {
                 cookieStore.clear();
             }
         }
@@ -81,7 +82,7 @@ public class HttpUtils {
     }
 
     // 清除登录cookid
-    public void clearCookie(){
+    public void clearCookie() {
         cookieJar.clearCookie();
     }
 
@@ -94,19 +95,6 @@ public class HttpUtils {
     }
 
     private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
-
-    /**
-     * 使用okhttp的post方法访问服务器
-     *
-     * @param activity          当前界面
-     * @param callbackInterface 自定义回调函数
-     * @param action            服务器action
-     * @param params            访问的参数
-     */
-    public void postEnqueue(BaseActivity activity, MyCallbackInterface callbackInterface, String action, String... params) {
-        Request request = getRequest(serverApiUri + action, getFormBody(params));
-        enqueue(generateMyCallback(activity, callbackInterface, request), request);
-    }
 
     // 发起post请求
     public void postEnqueue(Callback callback, String action, String... params) {
@@ -121,7 +109,7 @@ public class HttpUtils {
 
     // 获取一个request
     private Request getRequest(String url, RequestBody body) {
-        Log.e("TAG", "url = "+url);
+        Log.e("TAG", "url = " + url);
         Request.Builder builder = new Request.Builder();
         Request request = builder.url(url).post(body).build();
         return request;
@@ -146,6 +134,10 @@ public class HttpUtils {
                         builder.add(params[i * 2], value);
                         Log.e("TAG", params[i * 2] + " = " + value);
                     }
+                }
+                String token = MyApplication.getInstance().token;
+                if (!TextUtils.isEmpty(token)) {
+                    builder.add("token", token);
                 }
                 body = builder.build();
             } else {
@@ -208,7 +200,7 @@ public class HttpUtils {
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
-                        //其他配置
+                //其他配置
                 .build();
         Call call = downloadClient.newCall(request);
         call.enqueue(callback);
@@ -217,44 +209,41 @@ public class HttpUtils {
 
     // 创建一个上传
     public Call upload(BaseActivity activity, ProgressRequestListener listener,
-                       MyCallbackInterface callbackInterface, ArrayList<String> path, String action, String... params) {
+                       Callback callback, ArrayList<String> path, String action, String... params) {
         saveApiConnectToFile(activity, action, path, params);
         //构造上传请求，类似web表单
         RequestBody requestBody = getMultipartBody(path, params);
         final Request request = getRequest(serverApiUri + action, new ProgressRequestBody(requestBody, listener));
-        return upload(generateMyCallback(activity, callbackInterface, request), request);
+        return upload(callback, request);
     }
 
     private Call upload(Callback callback, Request request) {
         Call call = null;
-        try{
+        try {
             call = client.newCall(request);
             call.enqueue(callback);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return call;
     }
 
-    private Callback generateMyCallback(BaseActivity activity, MyCallbackInterface callbackInterface, Request request) {
-        return new MyCallback(activity, callbackInterface, request);
-    }
-
     private final String API_FILE = "api_connect";
-    private void saveApiConnectToFile(Context context, String action, ArrayList<String> path, String...params){
+
+    private void saveApiConnectToFile(Context context, String action, ArrayList<String> path, String... params) {
         StringBuilder sb = new StringBuilder();
         sb.append("action = ");
         sb.append(action);
-        if(path != null){
+        if (path != null) {
             sb.append(", file = ");
-            for(String p : path){
+            for (String p : path) {
                 sb.append(p);
                 sb.append(" ++ ");
             }
         }
-        if(params != null){
+        if (params != null) {
             sb.append(", params = ");
-            for(String p : params){
+            for (String p : params) {
                 sb.append(p);
                 sb.append(" ++ ");
             }

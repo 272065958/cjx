@@ -11,13 +11,8 @@ import android.widget.ListView;
 
 import com.model.cjx.R;
 import com.model.cjx.adapter.MyBaseAdapter;
-import com.model.cjx.bean.ResponseBean;
 import com.model.cjx.bean.TreeBean;
 import com.model.cjx.dialog.TipDialog;
-import com.model.cjx.http.MyCallbackInterface;
-import com.model.cjx.util.JsonParser;
-
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -177,10 +172,6 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
 
     protected abstract void returnPosition(TreeBean tb);
 
-    protected MyCallbackInterface getMyCallbackInterface(String id, Type type) {
-        return new MyLoadCallback(id, type);
-    }
-
     // 获取显示列表的适配器
     protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList<?> list);
 
@@ -194,31 +185,6 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
     protected void onLoadResult(ArrayList<?> list, String id) {
         hideLoadView();
         displayData(list, id);
-    }
-
-    class MyLoadCallback implements MyCallbackInterface {
-        String id;
-        Type type;
-
-        MyLoadCallback(String id, Type type) {
-            this.id = id;
-            this.type = type;
-        }
-
-        @Override
-        public Object parser(ResponseBean response) {
-            return JsonParser.getInstance().fromJson(response.datum, type);
-        }
-
-        @Override
-        public void success(Object result) {
-            onLoadResult((ArrayList<?>) result, id);
-        }
-
-        @Override
-        public void error() {
-            hideLoadView();
-        }
     }
 
     // 显示数据

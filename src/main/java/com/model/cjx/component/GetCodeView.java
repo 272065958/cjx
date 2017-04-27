@@ -1,8 +1,8 @@
 package com.model.cjx.component;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
-import android.widget.Button;
 
 import com.model.cjx.R;
 
@@ -13,9 +13,10 @@ import java.util.TimerTask;
  * Created by cjx on 2016-11-26.
  * 获取验证码的view
  */
-public class GetCodeView extends Button {
+public class GetCodeView extends AppCompatButton {
 
-    int timeOut = 60;
+    final int timeOut = 60;
+    int currentTime = timeOut;
     Timer timer;
     public GetCodeView(Context context) {
         super(context);
@@ -33,7 +34,7 @@ public class GetCodeView extends Button {
 
     public void startTimer() {
         setClickable(false);
-        setSelected(true);
+        setSelected(false);
         timer = new Timer(true);
         timer.schedule(new TimerTask() {
             @Override
@@ -42,14 +43,14 @@ public class GetCodeView extends Button {
                     @Override
                     public void run() {
                         if (timeOut > 0) {
-                            timeOut--;
+                            currentTime--;
                             setText(timeOut + " s");
                         } else {
                             cancel();
                             timer = null;
-                            timeOut = 60;
+                            currentTime = timeOut;
                             setText(R.string.button_get_code);
-                            setSelected(false);
+                            setSelected(true);
                             setClickable(true);
                         }
                     }

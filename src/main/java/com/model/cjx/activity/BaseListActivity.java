@@ -8,12 +8,8 @@ import android.view.ViewStub;
 
 import com.model.cjx.R;
 import com.model.cjx.adapter.MyBaseAdapter;
-import com.model.cjx.bean.ResponseBean;
 import com.model.cjx.component.LoadListView;
-import com.model.cjx.http.MyCallbackInterface;
-import com.model.cjx.util.JsonParser;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -101,33 +97,6 @@ public abstract class BaseListActivity extends BaseActivity {
     protected void onLoadResult(ArrayList list){
         hideLoadView();
         displayData(list);
-    }
-
-    // 获取一个默认的加载数据回调
-    protected MyCallbackInterface getMyCallbackInterface(Type type){
-        return new BaseCallInterface(type);
-    }
-
-    class BaseCallInterface implements MyCallbackInterface {
-        Type type;
-        BaseCallInterface(Type type){
-            this.type = type;
-        }
-
-        @Override
-        public Object parser(ResponseBean response) {
-            return JsonParser.getInstance().fromJson(response.datum, type);
-        }
-
-        @Override
-        public void success(Object result) {
-            onLoadResult((ArrayList)result);
-        }
-
-        @Override
-        public void error() {
-            hideLoadView();
-        }
     }
 
     MyBaseAdapter adapter;

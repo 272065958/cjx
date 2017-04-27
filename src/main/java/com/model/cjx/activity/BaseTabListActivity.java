@@ -8,12 +8,8 @@ import android.widget.AdapterView;
 
 import com.model.cjx.R;
 import com.model.cjx.adapter.MyBaseAdapter;
-import com.model.cjx.bean.ResponseBean;
 import com.model.cjx.component.LoadListView;
-import com.model.cjx.http.MyCallbackInterface;
-import com.model.cjx.util.JsonParser;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 /**
@@ -32,7 +28,6 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
     protected MyBaseAdapter[] adapters;
     protected int[] page;
     protected int[] limit;
-    protected MyCallbackInterface[] callback;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -110,7 +105,6 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
         }
         emptyViews = new View[count];
         adapters = new MyBaseAdapter[count];
-        callback = new MyCallbackInterface[count];
         return super.initItemView(count);
     }
 
@@ -169,13 +163,6 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
     protected void onLoadResult(int position, ArrayList list) {
         hideLoadView(position);
         displayData(position, list);
-    }
-
-    protected MyCallbackInterface getMyCallbackInterface(int position, Type type) {
-        if (callback[position] == null) {
-            callback[position] = new TabCallInterface(position, type);
-        }
-        return callback[position];
     }
 
     // 显示数据列表
@@ -242,33 +229,4 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
         }
     }
 
-    class TabCallInterface implements MyCallbackInterface {
-        int position;
-        Type type;
-
-        TabCallInterface(int position, Type type) {
-            this.position = position;
-            this.type = type;
-        }
-
-        @Override
-        public Object parser(ResponseBean response) {
-            return JsonParser.getInstance().fromJson(response.datum, type);
-        }
-
-        @Override
-        public void success(Object result) {
-            onLoadResult(position, (ArrayList) result);
-        }
-
-        @Override
-        public void error() {
-            hideLoadView(position);
-            if (openLoadMore) {
-                if (page[position] > 1) {
-                    page[position]--;
-                }
-            }
-        }
-    }
 }
