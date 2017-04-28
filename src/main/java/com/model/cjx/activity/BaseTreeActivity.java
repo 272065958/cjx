@@ -173,7 +173,7 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
     protected abstract void returnPosition(TreeBean tb);
 
     // 获取显示列表的适配器
-    protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList<?> list);
+    protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList list);
 
     protected void hideLoadView() {
         if (loadView.getVisibility() == View.VISIBLE) {
@@ -182,13 +182,13 @@ public abstract class BaseTreeActivity extends BaseActivity implements TabLayout
     }
 
     // 加载数据完成后调用
-    protected void onLoadResult(ArrayList<?> list, String id) {
+    protected void onLoadResult(ArrayList list, String id) {
         hideLoadView();
         displayData(list, id);
     }
 
     // 显示数据
-    protected void displayData(ArrayList<?> list, String id) {
+    protected void displayData(ArrayList list, String id) {
         int position = tabLayout.getTabCount() - 1;
         treeList.append(position, list);
         idList.append(position, id);

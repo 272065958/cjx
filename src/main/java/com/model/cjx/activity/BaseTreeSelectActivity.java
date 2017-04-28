@@ -20,7 +20,7 @@ public abstract class BaseTreeSelectActivity extends BaseTreeActivity implements
     }
 
     @Override
-    protected MyBaseAdapter getMyBaseAdapter(ArrayList<?> list) {
+    protected MyBaseAdapter getMyBaseAdapter(ArrayList list) {
         return new TreeAdapter(list, this);
     }
 

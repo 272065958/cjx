@@ -138,6 +138,7 @@ public class HttpUtils {
                 String token = MyApplication.getInstance().token;
                 if (!TextUtils.isEmpty(token)) {
                     builder.add("token", token);
+                    Log.e("TAG", "token = " + token);
                 }
                 body = builder.build();
             } else {
