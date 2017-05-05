@@ -1,6 +1,13 @@
 package com.model.cjx.util;
 
+import android.text.TextUtils;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 
 /**
@@ -9,6 +16,7 @@ import java.lang.reflect.Type;
 public class JsonParser {
     private static JsonParser instance;
     private Gson gson;
+
     private JsonParser() {
         gson = new Gson();
     }
@@ -24,21 +32,39 @@ public class JsonParser {
         return instance;
     }
 
-    public <T> T fromJson(String json, Type typeOfT){
-        try{
+    public <T> T fromJson(String json, Type typeOfT) {
+        try {
             return gson.fromJson(json, typeOfT);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public <T> T fromJson(String key, JSONObject jsonObject, Type typeOfT) {
+        if (jsonObject.has(key)) {
+            String value = null;
+            try {
+                value = jsonObject.getString(key);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            if (TextUtils.isEmpty(value)) {
+                return null;
+            }
+            return gson.fromJson(value, typeOfT);
+        } else {
             return null;
         }
     }
 
     /**
      * 将对象转换成字符串
+     *
      * @param object 待转换的对象
      * @return
      */
-    public String toJson(Object object){
+    public String toJson(Object object) {
         return gson.toJson(object);
     }
 }

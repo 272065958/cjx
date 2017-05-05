@@ -70,7 +70,7 @@
             android:gravity="center"
             android:text="@string/button_sure"
             android:background="@drawable/dialog_button"
-            android:textColor="@color/cjx_colorPrimary"
+            android:textColor="@color/cjx_colorPrimaryDark"
             android:textSize="16sp" />
     </LinearLayout>
 

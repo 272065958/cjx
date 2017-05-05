@@ -1,6 +1,5 @@
 package com.model.cjx.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +53,7 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
         return convertView;
     }
 
-    public void notifyDataSetChanged(ArrayList list) {
+    public void notifyDataSetChanged(ArrayList<T> list) {
         this.list = list;
         count = this.list == null ? 0 : this.list.size();
         notifyDataSetChanged();

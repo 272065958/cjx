@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.model.cjx.MyApplication;
 import com.model.cjx.activity.BaseActivity;
 import com.model.cjx.util.Tools;
 
@@ -18,7 +17,6 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Cookie;
 import okhttp3.CookieJar;
-import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -109,11 +107,14 @@ public class HttpUtils {
 
     // 获取一个request
     private Request getRequest(String url, RequestBody body) {
-        Log.e("TAG", "url = " + url);
         Request.Builder builder = new Request.Builder();
         Request request = builder.url(url).post(body).build();
         return request;
     }
+
+
+    private static final MediaType FORM_CONTENT_TYPE
+            = MediaType.parse("application/x-www-form-urlencoded; charset=utf-8");
 
     /**
      * 获取一个请求的参数body
@@ -122,30 +123,61 @@ public class HttpUtils {
      * @return
      */
     private RequestBody getFormBody(String... params) {
-        RequestBody body = null;
+//        RequestBody body = null;
+//        if (params != null) {
+//            int length = params.length;
+//            if (length % 2 == 0) {
+//                FormBody.Builder builder = new FormBody.Builder();
+//                int count = length / 2;
+//                for (int i = 0; i < count; i++) {
+//                    String value = params[i * 2 + 1];
+//                    if (!TextUtils.isEmpty(value)) {
+//                        builder.add(params[i * 2], value);
+//                        Log.e("TAG", params[i * 2] + " = " + value);
+//                    }
+//                }
+//                String token = MyApplication.getInstance().token;
+//                if (!TextUtils.isEmpty(token)) {
+//                    builder.add("token", token);
+//                    Log.e("TAG", "token = " + token);
+//                }
+//                body = builder.build();
+//            } else {
+//                Log.e("TAG", "======== > params error");
+//            }
+//        }
+        StringBuilder sb = null;
         if (params != null) {
             int length = params.length;
             if (length % 2 == 0) {
-                FormBody.Builder builder = new FormBody.Builder();
+                sb = new StringBuilder();
                 int count = length / 2;
                 for (int i = 0; i < count; i++) {
                     String value = params[i * 2 + 1];
                     if (!TextUtils.isEmpty(value)) {
-                        builder.add(params[i * 2], value);
-                        Log.e("TAG", params[i * 2] + " = " + value);
+                        sb.append(params[i * 2]);
+                        sb.append("=");
+                        sb.append(value);
+                        sb.append("&");
                     }
                 }
-                String token = MyApplication.getInstance().token;
-                if (!TextUtils.isEmpty(token)) {
-                    builder.add("token", token);
-                    Log.e("TAG", "token = " + token);
-                }
-                body = builder.build();
+//                String token = MyApplication.getInstance().token;
+//                if (!TextUtils.isEmpty(token)) {
+//                    sb.append("token=");
+//                    sb.append(token);
+//                } else {
+                    int leng = sb.length();
+                    if(leng > 0){
+                        sb.deleteCharAt(leng-1);
+                    }
+//                }
             } else {
                 Log.e("TAG", "======== > params error");
             }
         }
-        return body;
+        String param = sb == null ? null : sb.toString();
+        Log.e("TAG", "param = "+param);
+        return RequestBody.create(FORM_CONTENT_TYPE, param);
     }
 
     // 创建一个文件上传请求

@@ -17,6 +17,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by cjx on 2017/1/12.
@@ -154,5 +156,13 @@ public class Tools {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean isPhone(String mobiles) {
+        Pattern p = Pattern
+                .compile("1([3-8])\\d{9}");
+        Matcher m = p.matcher(mobiles);
+        System.out.println(m.matches() + "---");
+        return m.matches();
     }
 }

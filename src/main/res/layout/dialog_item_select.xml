@@ -9,7 +9,7 @@
         android:id="@+id/pick_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/block_line_height"
-        android:background="@color/cjx_colorPrimary" />
+        android:background="@color/cjx_colorPrimaryDark" />
 
     <ListView
         android:id="@+id/list_view"

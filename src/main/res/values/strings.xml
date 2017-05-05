@@ -9,6 +9,7 @@
     <string name="request_permission_tip">该功能需要读取内存卡权限，时候授权？</string>
     <string name="button_get_code">点击获取验证码</string>
     <string name="button_sure">确定</string>
+    <string name="button_complete">完成</string>
     <string name="button_cancel">取消</string>
     <string name="button_save">保存</string>
     <string name="select_photo_upload">(已选中%d张) 立即上传</string>

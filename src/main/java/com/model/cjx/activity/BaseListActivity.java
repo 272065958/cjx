@@ -57,6 +57,7 @@ public abstract class BaseListActivity extends BaseActivity {
             page = 1;
             hideLoadNextView();
         }
+        loadData();
     }
 
     protected void initListView() {
@@ -140,6 +141,7 @@ public abstract class BaseListActivity extends BaseActivity {
         if (adapter.getCount() == 0) {
             if(emptyView == null){
                 emptyView = ((ViewStub)findViewById(R.id.empty_view)).inflate();
+                initEmptyView(emptyView);
             }else{
                 emptyView.setVisibility(View.VISIBLE);
             }
@@ -148,6 +150,10 @@ public abstract class BaseListActivity extends BaseActivity {
                 emptyView.setVisibility(View.GONE);
             }
         }
+    }
+
+    protected void initEmptyView(View view){
+
     }
 
     protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList list);

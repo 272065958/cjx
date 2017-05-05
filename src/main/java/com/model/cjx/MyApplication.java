@@ -1,7 +1,6 @@
 package com.model.cjx;
 
 import android.app.Application;
-import android.content.Context;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
 
@@ -14,8 +13,6 @@ public abstract class MyApplication extends Application{
 
     public final static String PREFERENCE_ACCOUNT = "account";
     public final static String PREFERENCE_PASSWORD = "password";
-
-    public final static String ACTION_LOGIN = "action_login_";
     
     private static MyApplication instance;
     private int SCREEN_WIDTH = 0, SCREEN_HEIGHT = 0;

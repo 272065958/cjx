@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height"
     android:textSize="@dimen/text_size_middle"
-    android:textColor="@color/cjx_colorPrimary"
+    android:textColor="@color/cjx_colorPrimaryDark"
     android:background="@drawable/item_transparent_pressed_bg"
     android:scrollbars="none"
     android:gravity="center"
