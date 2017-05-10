@@ -3,6 +3,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="double_fab_margin">32dp</dimen>
     <dimen name="auto_margin">8dp</dimen>
+    <dimen name="auto_margin_negative">-8dp</dimen>
     <dimen name="bigger_margin">12dp</dimen>
     <dimen name="half_bigger_margin">6dp</dimen>
     <dimen name="item_height">45dp</dimen>

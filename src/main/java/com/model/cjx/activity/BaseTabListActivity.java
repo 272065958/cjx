@@ -30,17 +30,6 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
     protected int[] limit;
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case RESULT_LOGIN:
-                    executeLoad(tabLayout.getSelectedTabPosition());
-                    break;
-            }
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         if (listViews != null) {
             for (LoadListView listView : listViews) {

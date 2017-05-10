@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by cjx on 2016/10/28.
  * 列表基类，可以设置是否加载下一页功能
  */
-public abstract class BaseListActivity extends BaseActivity {
+public abstract class BaseListActivity<T> extends BaseActivity {
     protected boolean openLoadMore = true;
 
     protected LoadListView listView;
@@ -30,18 +30,6 @@ public abstract class BaseListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onCreateView();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case RESULT_LOGIN:
-                    loadData();
-                    break;
-            }
-        }
     }
 
     // 初始化界面
@@ -156,7 +144,7 @@ public abstract class BaseListActivity extends BaseActivity {
 
     }
 
-    protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList list);
+    protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList<T> list);
 
     // 加载数据
     protected abstract void loadData();

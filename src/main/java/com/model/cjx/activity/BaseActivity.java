@@ -27,7 +27,6 @@ import java.util.TimerTask;
  * Created by cjx on 2016/6/1.
  */
 public class BaseActivity extends AppCompatActivity {
-    public final int RESULT_LOGIN = 201;
     protected TextView toolbarTitle;
     protected Toolbar toolbar;
     public LoadDialog loadDialog;

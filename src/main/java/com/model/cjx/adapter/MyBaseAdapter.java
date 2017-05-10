@@ -44,7 +44,7 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
         MyViewHolder holder;
         if (convertView == null) {
             convertView = createView(context);
-            holder =bindViewHolder(convertView);
+            holder = bindViewHolder(convertView);
             convertView.setTag(R.id.tag_view, holder);
         } else {
             holder = (MyViewHolder) convertView.getTag(R.id.tag_view);
@@ -72,13 +72,14 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
 
     abstract protected void bindData(int position, MyViewHolder holder);
 
-    public class MyViewHolder {
+    protected class MyViewHolder {
         View view;
-        public MyViewHolder(View view){
+
+        public MyViewHolder(View view) {
             this.view = view;
         }
 
-        public View getView(){
+        public View getView() {
             return view;
         }
     }
@@ -88,18 +89,15 @@ public abstract class MyBaseAdapter<T> extends BaseAdapter {
      super(list, context);
      }
 
-     @Override
-     protected View createView(Context context) {
+     @Override protected View createView(Context context) {
      return null;
      }
 
-     @Override
-     protected MyViewHolder bindViewHolder(View view) {
+     @Override protected MyViewHolder bindViewHolder(View view) {
      return new ViewHolder(view);
      }
 
-     @Override
-     protected void bindData(int position, MyViewHolder holder) {
+     @Override protected void bindData(int position, MyViewHolder holder) {
 
      }
 
