@@ -5,8 +5,8 @@
             <solid android:color="@color/cjx_divider_color" />
         </shape>
     </item>
-    <item android:bottom="1dp"
-        android:top="1dp">
+    <item android:bottom="@dimen/divider_height"
+        android:top="@dimen/divider_height">
         <shape android:shape="rectangle">
             <solid android:color="@color/cjx_background_color"/>
         </shape>

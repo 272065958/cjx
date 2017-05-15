@@ -50,7 +50,7 @@ public abstract class BaseTabRefreshActivity extends BaseTabListActivity {
         super.hideLoadView(position);
     }
 
-    class MyRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
+    private class MyRefreshListener implements SwipeRefreshLayout.OnRefreshListener {
         int currentPosition;
 
         MyRefreshListener(int position) {

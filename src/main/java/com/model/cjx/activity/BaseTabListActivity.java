@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by cjx on 2017/3/10.
  * 用于左右滑动的tab页面基类
  */
-public abstract class BaseTabListActivity extends BaseTabActivity implements AdapterView.OnItemClickListener {
+public abstract class BaseTabListActivity<T> extends BaseTabActivity implements AdapterView.OnItemClickListener {
 
     protected boolean openLoadMore = true;
 
@@ -25,7 +25,7 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
     protected View[] loadViews;
     protected View[] emptyViews;
     protected View[] loadNextViews;
-    protected MyBaseAdapter[] adapters;
+    protected MyBaseAdapter<T>[] adapters;
     protected int[] page;
     protected int[] limit;
 
@@ -39,7 +39,7 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
             }
         }
         if (adapters != null) {
-            for (MyBaseAdapter adapter : adapters) {
+            for (MyBaseAdapter<T> adapter : adapters) {
                 if (adapter != null) {
                     adapter.onDestroy();
                 }
@@ -149,14 +149,14 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
     }
 
     // 加载数据完成后调用
-    protected void onLoadResult(int position, ArrayList list) {
+    protected void onLoadResult(int position, ArrayList<T> list) {
         hideLoadView(position);
         displayData(position, list);
     }
 
     // 显示数据列表
-    protected void displayData(int position, ArrayList list) {
-        MyBaseAdapter adapter = adapters[position];
+    protected void displayData(int position, ArrayList<T> list) {
+        MyBaseAdapter<T> adapter = adapters[position];
         LoadListView listView = listViews[position];
         if (adapter == null) {
             adapter = getMyBaseAdapter(position, list);
@@ -167,7 +167,7 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
             if (!openLoadMore || page[position] == 1) {
                 adapter.notifyDataSetChanged(list);
             } else {
-                ArrayList oldData = adapter.list;
+                ArrayList<T> oldData = adapter.list;
                 oldData.addAll(list);
                 adapter.notifyDataSetChanged(oldData);
             }
@@ -201,9 +201,9 @@ public abstract class BaseTabListActivity extends BaseTabActivity implements Ada
     // 加载数据列表
     protected abstract void loadData(int position);
 
-    protected abstract MyBaseAdapter getMyBaseAdapter(int position, ArrayList list);
+    protected abstract MyBaseAdapter<T> getMyBaseAdapter(int position, ArrayList<T> list);
 
-    class MyFooterLoadListener implements LoadListView.FooterLoadListener {
+    private class MyFooterLoadListener implements LoadListView.FooterLoadListener {
         @Override
         public void loadMore(LoadListView view) {
             int position = (int) view.getTag(R.id.tag_type);

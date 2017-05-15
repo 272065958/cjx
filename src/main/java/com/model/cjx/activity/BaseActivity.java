@@ -239,9 +239,14 @@ public class BaseActivity extends AppCompatActivity {
             timer = null;
             imm = null;
         }
+        unregisterMyReceiver();
+        super.onDestroy();
+    }
+
+    public void unregisterMyReceiver(){
         if(refreshReceiver != null){
             unregisterReceiver(refreshReceiver);
+            refreshReceiver = null;
         }
-        super.onDestroy();
     }
 }

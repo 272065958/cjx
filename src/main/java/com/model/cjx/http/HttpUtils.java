@@ -123,7 +123,7 @@ public class HttpUtils {
      * @return
      */
     private RequestBody getFormBody(String... params) {
-//        RequestBody body = null;
+//        RequestBody body = null;    // 坑，  后台神奇的读取编码形式，无法识别中文
 //        if (params != null) {
 //            int length = params.length;
 //            if (length % 2 == 0) {
@@ -161,7 +161,7 @@ public class HttpUtils {
                         sb.append("&");
                     }
                 }
-//                String token = MyApplication.getInstance().token;
+//                String token = MyApplication.getInstance().token;   坑  如果所有接口都传入token，后台会给你神奇的惊喜，所以不要默认都传token
 //                if (!TextUtils.isEmpty(token)) {
 //                    sb.append("token=");
 //                    sb.append(token);

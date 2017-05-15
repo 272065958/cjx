@@ -2,6 +2,7 @@ package com.model.cjx.activity;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
@@ -15,12 +16,15 @@ import com.model.cjx.adapter.MyPagerAdapter;
 public abstract class BaseTabActivity extends BaseActivity implements TabLayout.OnTabSelectedListener {
 
     protected TabLayout tabLayout;
-    private ViewPager viewPager;
+    protected ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tab_list);
+        setContentView();
+    }
 
+    protected void setContentView(){
+        setContentView(R.layout.activity_tab_list);
         initView();
     }
 
