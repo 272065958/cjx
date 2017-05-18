@@ -65,7 +65,7 @@ public abstract class BaseTabListActivity<T> extends BaseTabActivity implements 
         return v;
     }
 
-    protected void initListView(View v, int i){
+    protected void initListView(View v, int i) {
         LoadListView listView = (LoadListView) v.findViewById(R.id.list_view);
         listView.setDivider(ContextCompat.getDrawable(this, R.drawable.listview_divider));
         listView.setDividerHeight(getResources().getDimensionPixelOffset(R.dimen.auto_margin));
@@ -141,7 +141,7 @@ public abstract class BaseTabListActivity<T> extends BaseTabActivity implements 
     }
 
     // 隐藏加载下一页的界面
-    private void hideLoadNextView(int position){
+    private void hideLoadNextView(int position) {
         View loadNextView = loadNextViews[position];
         if (!(loadNextView instanceof ViewStub) && loadNextView.getVisibility() == View.VISIBLE) {
             loadNextView.setVisibility(View.GONE);
@@ -177,6 +177,7 @@ public abstract class BaseTabListActivity<T> extends BaseTabActivity implements 
             if (list == null || list.size() < limit[position]) { // 不再加载下一页
                 listView.setFooterLoadListener(null);
             } else if (page[position] == 1) {
+                listView.setSelection(0);
                 if (footerLoadListener == null) {
                     footerLoadListener = new MyFooterLoadListener();
                 }
@@ -190,7 +191,6 @@ public abstract class BaseTabListActivity<T> extends BaseTabActivity implements 
             } else {
                 emptyViews[position].setVisibility(View.VISIBLE);
             }
-
         } else {
             if (!(emptyViews[position] instanceof ViewStub)) {
                 emptyViews[position].setVisibility(View.GONE);

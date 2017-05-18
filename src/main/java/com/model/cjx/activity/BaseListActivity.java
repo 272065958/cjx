@@ -1,6 +1,5 @@
 package com.model.cjx.activity;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -33,15 +32,15 @@ public abstract class BaseListActivity<T> extends BaseActivity {
     }
 
     // 初始化界面
-    protected void onCreateView(){
+    protected void onCreateView() {
         setContentView(R.layout.activity_list_view);
         initListView();
         loadData();
     }
 
     // 刷新界面
-    protected void refresh(){
-        if(openLoadMore){
+    protected void refresh() {
+        if (openLoadMore) {
             page = 1;
             hideLoadNextView();
         }
@@ -51,7 +50,7 @@ public abstract class BaseListActivity<T> extends BaseActivity {
     protected void initListView() {
         loadView = findViewById(R.id.loading_view);
         listView = (LoadListView) findViewById(R.id.list_view);
-        if(openLoadMore){
+        if (openLoadMore) {
             page = 1;
             limit = 15;
         }
@@ -75,15 +74,15 @@ public abstract class BaseListActivity<T> extends BaseActivity {
     }
 
     // 隐藏加载下一页的界面
-    private void hideLoadNextView(){
-        if(loadNextView != null && loadNextView.getVisibility() == View.VISIBLE){
+    private void hideLoadNextView() {
+        if (loadNextView != null && loadNextView.getVisibility() == View.VISIBLE) {
             loadNextView.setVisibility(View.GONE);
             listView.setFooterLoadState(false);
         }
     }
 
     // 加载数据完成后调用
-    protected void onLoadResult(ArrayList list){
+    protected void onLoadResult(ArrayList list) {
         hideLoadView();
         displayData(list);
     }
@@ -104,17 +103,17 @@ public abstract class BaseListActivity<T> extends BaseActivity {
                 adapter.notifyDataSetChanged(oldData);
             }
         }
-        if(openLoadMore){
+        if (openLoadMore) {
             if (list == null || list.size() < limit) { // 不再加载下一页
                 listView.setFooterLoadListener(null);
-            }else if(page == 1){
-                if(footerLoadListener == null){
-                    footerLoadListener = new LoadListView.FooterLoadListener(){
+            } else if (page == 1) {
+                if (footerLoadListener == null) {
+                    footerLoadListener = new LoadListView.FooterLoadListener() {
                         @Override
                         public void loadMore(LoadListView view) {
-                            if(loadNextView == null){
-                                loadNextView = ((ViewStub)findViewById(R.id.loading_next_page)).inflate();
-                            }else{
+                            if (loadNextView == null) {
+                                loadNextView = ((ViewStub) findViewById(R.id.loading_next_page)).inflate();
+                            } else {
                                 loadNextView.setVisibility(View.VISIBLE);
                             }
                             page++;
@@ -122,25 +121,26 @@ public abstract class BaseListActivity<T> extends BaseActivity {
                         }
                     };
                 }
+                listView.setSelection(0);
                 listView.setFooterLoadListener(footerLoadListener);
             }
             listView.setFooterLoadState(false);
         }
         if (adapter.getCount() == 0) {
-            if(emptyView == null){
-                emptyView = ((ViewStub)findViewById(R.id.empty_view)).inflate();
+            if (emptyView == null) {
+                emptyView = ((ViewStub) findViewById(R.id.empty_view)).inflate();
                 initEmptyView(emptyView);
-            }else{
+            } else {
                 emptyView.setVisibility(View.VISIBLE);
             }
         } else {
-            if(emptyView != null && emptyView.getVisibility() == View.VISIBLE){
+            if (emptyView != null && emptyView.getVisibility() == View.VISIBLE) {
                 emptyView.setVisibility(View.GONE);
             }
         }
     }
 
-    protected void initEmptyView(View view){
+    protected void initEmptyView(View view) {
 
     }
 
