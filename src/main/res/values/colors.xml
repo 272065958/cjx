@@ -24,7 +24,7 @@
     <!-- 分隔线色 -->
     <color name="cjx_divider_color">#e3e3e3</color>
     <!-- 点击效果 -->
-    <color name="cjx_item_pressed_color">#44bdbdbd</color>
+    <color name="cjx_item_pressed_color">#33bdbdbd</color>
 
     <color name="cjx_shadow_color">#33000000</color>
 

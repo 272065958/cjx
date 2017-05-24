@@ -123,12 +123,12 @@ public class Tools {
     }
 
     // 返回服务器图片完整路径
-    public static void setHeadImage(final Activity context, final ImageView imageView, String path) {
+    public static void setHeadImage(final Activity context, final ImageView imageView, String path, int errorRes) {
         if (context.isFinishing()) {
             return;
         }
         if (!TextUtils.isEmpty(path)) {
-            Glide.with(context).load(path).asBitmap().centerCrop().into(new BitmapImageViewTarget(imageView) {
+            Glide.with(context).load(path).asBitmap().centerCrop().error(errorRes).into(new BitmapImageViewTarget(imageView) {
                 @Override
                 protected void setResource(Bitmap resource) {
                     RoundedBitmapDrawable circularBitmapDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), resource);
@@ -137,7 +137,7 @@ public class Tools {
                 }
             });
         } else {
-            imageView.setImageBitmap(null);
+            imageView.setImageResource(errorRes);
         }
     }
 

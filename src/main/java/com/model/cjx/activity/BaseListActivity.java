@@ -23,7 +23,8 @@ public abstract class BaseListActivity<T> extends BaseActivity {
 
     LoadListView.FooterLoadListener footerLoadListener;
 
-    int page, limit;
+    protected int page;
+    protected int limit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +83,15 @@ public abstract class BaseListActivity<T> extends BaseActivity {
     }
 
     // 加载数据完成后调用
-    protected void onLoadResult(ArrayList list) {
+    protected void onLoadResult(ArrayList<T> list) {
         hideLoadView();
         displayData(list);
     }
 
-    MyBaseAdapter adapter;
+    MyBaseAdapter<T> adapter;
 
     // 显示数据
-    protected void displayData(ArrayList list) {
+    protected void displayData(ArrayList<T> list) {
         if (adapter == null) {
             adapter = getMyBaseAdapter(list);
             listView.setAdapter(adapter);
@@ -98,7 +99,7 @@ public abstract class BaseListActivity<T> extends BaseActivity {
             if (!openLoadMore || page == 1) {
                 adapter.notifyDataSetChanged(list);
             } else {
-                ArrayList oldData = adapter.list;
+                ArrayList<T> oldData = adapter.list;
                 oldData.addAll(list);
                 adapter.notifyDataSetChanged(oldData);
             }
@@ -144,7 +145,7 @@ public abstract class BaseListActivity<T> extends BaseActivity {
 
     }
 
-    protected abstract MyBaseAdapter getMyBaseAdapter(ArrayList<T> list);
+    protected abstract MyBaseAdapter<T> getMyBaseAdapter(ArrayList<T> list);
 
     // 加载数据
     protected abstract void loadData();
