@@ -111,12 +111,17 @@ public class Tools {
     }
 
     // 返回服务器图片完整路径
-    public static void setImage(Activity context, ImageView imageView, String path) {
+    public static void setImage(Activity context, ImageView imageView, String path, int errorRes) {
         if (context.isFinishing()) {
             return;
         }
         if (!TextUtils.isEmpty(path)) {
-            Glide.with(context).load(path).into(imageView);
+            if(errorRes > 0){
+                Glide.with(context).load(path).error(errorRes).into(imageView);
+            }else{
+                Glide.with(context).load(path).into(imageView);
+            }
+
         } else {
             imageView.setImageBitmap(null);
         }
@@ -162,7 +167,13 @@ public class Tools {
         Pattern p = Pattern
                 .compile("1([3-8])\\d{9}");
         Matcher m = p.matcher(mobiles);
-        System.out.println(m.matches() + "---");
+        return m.matches();
+    }
+
+    public static boolean isUrl(String url) {
+        Pattern p = Pattern
+                .compile("((http|ftp|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?");
+        Matcher m = p.matcher(url);
         return m.matches();
     }
 }

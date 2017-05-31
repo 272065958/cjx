@@ -188,6 +188,7 @@ public abstract class BaseTabListActivity<T> extends BaseTabActivity implements 
         if (adapter.getCount() == 0) {
             if (emptyViews[position] instanceof ViewStub) {
                 emptyViews[position] = ((ViewStub) emptyViews[position]).inflate();
+                initEmptyView(emptyViews[position]);
             } else {
                 emptyViews[position].setVisibility(View.VISIBLE);
             }
@@ -196,6 +197,10 @@ public abstract class BaseTabListActivity<T> extends BaseTabActivity implements 
                 emptyViews[position].setVisibility(View.GONE);
             }
         }
+    }
+
+    protected void initEmptyView(View view) {
+
     }
 
     // 加载数据列表

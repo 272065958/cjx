@@ -53,7 +53,7 @@ public abstract class BaseListActivity<T> extends BaseActivity {
         listView = (LoadListView) findViewById(R.id.list_view);
         if (openLoadMore) {
             page = 1;
-            limit = 15;
+            limit = 14;
         }
         loadView = findViewById(R.id.loading_view);
     }

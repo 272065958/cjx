@@ -394,7 +394,7 @@ public class RotationView extends RelativeLayout {
             TouchImageView image = (TouchImageView) v;
             container.addView(v);
             AdvertiseBean ib = photos.get(position);
-            Tools.setImage(context, image, ib.image);
+            Tools.setImage(context, image, ib.image, -1);
             return v;
         }
 

@@ -5,18 +5,22 @@ import android.util.DisplayMetrics;
 import android.widget.Toast;
 
 import com.model.cjx.activity.BaseActivity;
+import com.model.cjx.dialog.NetDialog;
+
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 /**
  * Created by cjx on 2017/1/13.
  */
 public abstract class MyApplication extends Application{
 
-    public final static String PREFERENCE_ACCOUNT = "account";
-    public final static String PREFERENCE_PASSWORD = "password";
-    
     private static MyApplication instance;
     private int SCREEN_WIDTH = 0, SCREEN_HEIGHT = 0;
     public String token;
+
+    HashMap<String, WeakReference<NetDialog>> netDialogs;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -74,4 +78,24 @@ public abstract class MyApplication extends Application{
     public abstract void startLogin(BaseActivity activity);
 
     public abstract boolean isLogin();
+
+    public void showNetConnectDialog(BaseActivity activity) {
+        if (activity == null) {
+            Toast.makeText(this, "操作异常,请关闭应用再重试", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String name = activity.getLocalClassName();
+        NetDialog netDialog = null;
+        if (netDialogs == null) {
+            netDialogs = new HashMap<>();
+        }
+        if (netDialogs.containsKey(name)) {
+            netDialog = netDialogs.get(name).get();
+        }
+        if (netDialog == null || netDialog.isOutActivity()) {
+            netDialog = new NetDialog(activity);
+            netDialogs.put(name, new WeakReference<>(netDialog));
+        }
+        netDialog.show();
+    }
 }
