@@ -7,6 +7,7 @@ import android.os.Environment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.text.TextUtils;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -116,9 +117,9 @@ public class Tools {
             return;
         }
         if (!TextUtils.isEmpty(path)) {
-            if(errorRes > 0){
+            if (errorRes > 0) {
                 Glide.with(context).load(path).error(errorRes).into(imageView);
-            }else{
+            } else {
                 Glide.with(context).load(path).into(imageView);
             }
 
@@ -171,9 +172,10 @@ public class Tools {
     }
 
     public static boolean isUrl(String url) {
-        Pattern p = Pattern
-                .compile("((http|ftp|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?");
-        Matcher m = p.matcher(url);
-        return m.matches();
+//        Pattern p = Pattern
+//                .compile("((http|ftp|https)://)(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(:[0-9]{1,4})*(/[a-zA-Z0-9\\&%_\\./-~-]*)?");
+//        Matcher m = p.matcher(url);
+//        return m.matches();
+        return URLUtil.isHttpUrl(url) || URLUtil.isHttpsUrl(url);
     }
 }
